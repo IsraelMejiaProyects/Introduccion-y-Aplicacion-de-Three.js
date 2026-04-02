@@ -24,20 +24,7 @@
     <p>Explora el mundo del 3D en la web con ejemplos interactivos.</p>
 
     <a class="btn" href="lab.html">Ir al Laboratorio</a>
-    <div class="lab-container">
-
-    <div class="code-panel">
-      <h2>Código</h2>
-      <pre id="codeDisplay">
-  // Aquí aparecerá el código
-      </pre>
-    </div>
-
-    <div class="scene-panel">
-      <h2>Escena</h2>
-      <div id="scene-container"></div>
-    </div>
-
+    
     <div class="lab-container">
 
       <div class="code-panel">
@@ -53,8 +40,22 @@
       </div>
 
     </div>
+
+    <div class="exercise-panel">
+      <p id="instruction">Crea la escena escribiendo la palabra faltante:</p>
+
+      <code>
+        const scene = new THREE.____();
+      </code>
+
+      <input type="text" id="userInput">
+      <button id="checkBtn">Validar</button>
+
+      <p id="feedback"></p>
     </div>
-    
+
+    <script type="module" src="lab.js"></script>
+
   </main>
 
 </body>
