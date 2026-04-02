@@ -41,3 +41,36 @@ main {
   text-decoration: none;
   border-radius: 8px;
 }
+
+
+
+
+
+.lab-container {
+  display: flex;
+  height: 70vh;
+}
+
+.code-panel, .scene-panel {
+  width: 50%;
+  padding: 20px;
+}
+
+.code-panel {
+  background-color: #0d1117;
+  border-right: 1px solid #30363d;
+}
+
+.scene-panel {
+  background-color: black;
+}
+
+#scene-container {
+  width: 100%;
+  height: 100%;
+}
+
+.exercise-panel {
+  padding: 20px;
+  text-align: center;
+}
