@@ -255,14 +255,4 @@ shapeSelector.addEventListener('change', (event) => {
 });
 
 
-const input = document.getElementById("userInput");
-const btn = document.getElementById("checkBtn");
-const feedback = document.getElementById("feedback");
 
-btn.addEventListener("click", () => {
-    if(input.value.trim().toLowerCase() === "scene"){
-        feedback.textContent = "✅ Correcto";
-    } else {
-        feedback.textContent = "❌ Intenta de nuevo";
-    }
-});
