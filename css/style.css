@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  font-family: 'Roboto Mono', monospace;
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+header {
+  background-color: #161b22;
+  padding: 20px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #58a6ff;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #79c0ff;
+}
+
+main {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 25px;
+  background-color: #238636;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
