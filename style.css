@@ -74,3 +74,17 @@ main {
   padding: 20px;
   text-align: center;
 }
+
+
+.editor {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #c9d1d9;
+  overflow-x: auto;
+  min-height: 300px;
+  white-space: pre-wrap;
+}

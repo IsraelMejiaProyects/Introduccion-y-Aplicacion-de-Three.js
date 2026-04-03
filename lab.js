@@ -1,24 +1,23 @@
 import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
 import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 
 let scene, camera, renderer, controls;
 let geometry, material, currentMesh;
 let light;
 
-let animationStarted = false;
+let animationStarted = false;   
 
-// Validar contenedor
 const container = document.getElementById('scene-container');
-if (!container) {
-  throw new Error("No existe el elemento #scene-container en el HTML");
-}
 
 let step = 0;
+let codeLines = [];
 
 const steps = [
   {
     question: "const scene = new THREE.____();",
     answer: "scene",
+    code: "const scene = new THREE.Scene();",
     action: () => {
       scene = new THREE.Scene();
     }
@@ -26,6 +25,7 @@ const steps = [
   {
     question: "const camera = new THREE.____(75, width/height, 0.1, 1000);",
     answer: "perspectivecamera",
+    code: "const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);",
     action: () => {
       const width = container.clientWidth;
       const height = container.clientHeight;
@@ -37,6 +37,7 @@ const steps = [
   {
     question: "const renderer = new THREE.____({ antialias: true });",
     answer: "webglrenderer",
+    code: "const renderer = new THREE.WebGLRenderer({ antialias: true });",
     action: () => {
       renderer = new THREE.WebGLRenderer({ antialias: true });
 
@@ -50,6 +51,7 @@ const steps = [
   {
     question: "geometry = new THREE.____();",
     answer: "boxgeometry",
+    code: "geometry = new THREE.BoxGeometry();",
     action: () => {
       geometry = new THREE.BoxGeometry();
     }
@@ -57,6 +59,7 @@ const steps = [
   {
     question: "material = new THREE.MeshStandardMaterial({ color: ____ });",
     answer: "0x00ffcc",
+    code: "material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });",
     action: () => {
       material = new THREE.MeshStandardMaterial({
         color: 0x00ffcc,
@@ -68,6 +71,7 @@ const steps = [
   {
     question: "currentMesh = new THREE.____(geometry, material);",
     answer: "mesh",
+    code: "currentMesh = new THREE.Mesh(geometry, material);",
     action: () => {
       currentMesh = new THREE.Mesh(geometry, material);
       scene.add(currentMesh);
@@ -76,19 +80,17 @@ const steps = [
   {
     question: "light = new THREE.PointLight(0xffffff, ____);",
     answer: "1",
+    code: "light = new THREE.PointLight(0xffffff, 1);",
     action: () => {
       light = new THREE.PointLight(0xffffff, 1);
       light.position.set(5, 5, 5);
       scene.add(light);
-
-      // Luz ambiental (mejora visual)
-      const ambient = new THREE.AmbientLight(0xffffff, 0.3);
-      scene.add(ambient);
     }
   },
   {
-    question: "// Escribe el nombre de la clase: new ____ (camera, renderer.domElement);",
+    question: "const controls = new ____ (camera, renderer.domElement);",
     answer: "orbitcontrols",
+    code: "const controls = new OrbitControls(camera, renderer.domElement);",
     action: () => {
       controls = new OrbitControls(camera, renderer.domElement);
     }
@@ -96,36 +98,41 @@ const steps = [
   {
     question: "function animate() { requestAnimationFrame(____); }",
     answer: "animate",
+    code: "function animate() { requestAnimationFrame(animate); }",
     action: () => {
       startAnimation();
     }
   }
 ];
 
-// Elementos UI
 const input = document.getElementById("userInput");
 const btn = document.getElementById("checkBtn");
 const feedback = document.getElementById("feedback");
-const codeBlock = document.querySelector("code");
-
-// Validar UI
-if (!input || !btn || !feedback || !codeBlock) {
-  throw new Error("Faltan elementos del DOM (input, botón, feedback o code)");
-}
+const codeBlock = document.getElementById("exerciseCode");
 
 function loadStep() {
   codeBlock.textContent = steps[step].question;
 }
 
+function updateCodeDisplay() {
+  const codeDisplay = document.getElementById("codeDisplay");
+  codeDisplay.textContent = codeLines.join("\n");
+}
+
 loadStep();
 
 btn.addEventListener("click", () => {
+
   const userValue = input.value.trim().toLowerCase();
 
   if (userValue === steps[step].answer) {
+
     feedback.textContent = "✅ Correcto";
 
     steps[step].action();
+
+    codeLines.push(steps[step].code);
+    updateCodeDisplay();
 
     step++;
     input.value = "";
@@ -139,9 +146,11 @@ btn.addEventListener("click", () => {
   } else {
     feedback.textContent = "❌ Intenta de nuevo";
   }
+
 });
 
 function startAnimation() {
+
   if (animationStarted) return;
   animationStarted = true;
 
@@ -163,6 +172,7 @@ function startAnimation() {
 }
 
 window.addEventListener('resize', () => {
+
   if (!renderer || !camera) return;
 
   const width = container.clientWidth;
@@ -172,4 +182,5 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
 
   renderer.setSize(width, height);
+
 });

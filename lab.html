@@ -3,65 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>Laboratorio - Three.js</title>
-
-  <!-- Fuente -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="fundamentos.html">Fundamentos</a>
-      <a href="lab.html">Laboratorio</a>
-    </nav>
-  </header>
+<header>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="fundamentos.html">Fundamentos</a>
+    <a href="lab.html">Laboratorio</a>
+  </nav>
+</header>
 
+<div class="lab-container">
 
-  <!-- CONTENEDOR PRINCIPAL -->
-  <div class="lab-container">
+  <!-- CÓDIGO -->
+  <div class="code-panel">
+    <h2>Código</h2>
+    <pre id="codeDisplay" class="editor"></pre>
 
-    <!-- PANEL DE CÓDIGO -->
-    <div class="code-panel">
-      <h2>Código</h2>
-
-      <pre id="codeDisplay">
-// Aquí se construirá el código paso a paso
-      </pre>
-
-      <h3>Ejercicio</h3>
-      <code id="exerciseCode"></code>
-
-    </div>
-
-
-    <!-- PANEL DE ESCENA -->
-    <div class="scene-panel">
-      <h2>Escena</h2>
-      <div id="scene-container"></div>
-    </div>
-
+    <h3>Ejercicio</h3>
+    <code id="exerciseCode"></code>
   </div>
 
-
-  <!-- PANEL DE INTERACCIÓN -->
-  <div class="exercise-panel">
-
-    <p id="instruction">Completa el código:</p>
-
-    <input type="text" id="userInput" placeholder="Escribe aquí...">
-    <button id="checkBtn">Validar</button>
-
-    <p id="feedback"></p>
-
+  <!-- ESCENA -->
+  <div class="scene-panel">
+    <h2>Escena</h2>
+    <div id="scene-container"></div>
   </div>
 
+</div>
 
-  <!-- SCRIPT -->
-  <script type="module" src="lab.js"></script>
+<!-- INTERACCIÓN -->
+<div class="exercise-panel">
+  <p id="instruction">Completa el código:</p>
+
+  <input type="text" id="userInput" placeholder="Escribe aquí...">
+  <button id="checkBtn">Validar</button>
+
+  <p id="feedback"></p>
+</div>
+
+<script type="module" src="lab.js"></script>
 
 </body>
 </html>
