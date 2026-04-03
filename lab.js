@@ -12,62 +12,69 @@ let step = 0;
 let codeLines = [];
 
 const steps = [
+
   {
     question: "const scene = new THREE.____();",
     answer: "scene",
     code: "const scene = new THREE.Scene();",
-
     explanation: "La escena es el contenedor principal donde se agregan todos los objetos 3D.",
-    hint: "Es una clase que representa el entorno completo. Empieza con 'Scene'.",
+    hint: "Es una clase base que representa el entorno. Empieza con 'Scene'.",
     example: "const scene = new THREE.Scene();",
-
     action: () => {
-        scene = new THREE.Scene();
+      scene = new THREE.Scene();
     }
   },
+
   {
     question: "const camera = new THREE.____(75, width/height, 0.1, 1000);",
     answer: "perspectivecamera",
-    code: "const camera = new THREE.PerspectiveCamera(...);",
-
+    code: "const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);",
     explanation: "La cámara define desde qué punto se observa la escena.",
-    hint: "Es una cámara en perspectiva (como el ojo humano).",
-    example: "new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)",
-
+    hint: "Es una cámara en perspectiva (simula la visión humana).",
+    example: "new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);",
     action: () => {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-
-        camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-        camera.position.set(0, 0, 5);
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+      camera.position.set(0, 0, 5);
     }
   },
+
   {
     question: "const renderer = new THREE.____({ antialias: true });",
     answer: "webglrenderer",
     code: "const renderer = new THREE.WebGLRenderer({ antialias: true });",
+    explanation: "El renderer se encarga de dibujar la escena en el navegador.",
+    hint: "Utiliza WebGL para renderizar gráficos.",
+    example: "const renderer = new THREE.WebGLRenderer();",
     action: () => {
       renderer = new THREE.WebGLRenderer({ antialias: true });
-
       const width = container.clientWidth;
       const height = container.clientHeight;
-
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
     }
   },
+
   {
     question: "geometry = new THREE.____();",
     answer: "boxgeometry",
     code: "geometry = new THREE.BoxGeometry();",
+    explanation: "La geometría define la forma del objeto 3D.",
+    hint: "Es una figura cúbica.",
+    example: "new THREE.BoxGeometry();",
     action: () => {
       geometry = new THREE.BoxGeometry();
     }
   },
+
   {
     question: "material = new THREE.MeshStandardMaterial({ color: ____ });",
     answer: "0x00ffcc",
     code: "material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });",
+    explanation: "El material define cómo se ve la superficie del objeto.",
+    hint: "Es un color en formato hexadecimal (empieza con 0x).",
+    example: "color: 0xff0000 // rojo",
     action: () => {
       material = new THREE.MeshStandardMaterial({
         color: 0x00ffcc,
@@ -76,41 +83,58 @@ const steps = [
       });
     }
   },
+
   {
     question: "currentMesh = new THREE.____(geometry, material);",
     answer: "mesh",
     code: "currentMesh = new THREE.Mesh(geometry, material);",
+    explanation: "El mesh combina la geometría y el material en un objeto visible.",
+    hint: "Es el objeto final que se agrega a la escena.",
+    example: "new THREE.Mesh(geometry, material);",
     action: () => {
       currentMesh = new THREE.Mesh(geometry, material);
       scene.add(currentMesh);
     }
   },
+
   {
     question: "light = new THREE.PointLight(0xffffff, ____);",
     answer: "1",
     code: "light = new THREE.PointLight(0xffffff, 1);",
+    explanation: "La luz permite que los objetos sean visibles.",
+    hint: "Es la intensidad de la luz (número).",
+    example: "new THREE.PointLight(0xffffff, 1);",
     action: () => {
       light = new THREE.PointLight(0xffffff, 1);
       light.position.set(5, 5, 5);
       scene.add(light);
     }
   },
+
   {
     question: "const controls = new ____ (camera, renderer.domElement);",
     answer: "orbitcontrols",
     code: "const controls = new OrbitControls(camera, renderer.domElement);",
+    explanation: "Permite mover la cámara con el mouse.",
+    hint: "Controla la órbita alrededor del objeto.",
+    example: "new OrbitControls(camera, renderer.domElement);",
     action: () => {
       controls = new OrbitControls(camera, renderer.domElement);
     }
   },
+
   {
     question: "function animate() { requestAnimationFrame(____); }",
     answer: "animate",
     code: "function animate() { requestAnimationFrame(animate); }",
+    explanation: "La animación actualiza la escena continuamente.",
+    hint: "Se llama a sí misma para crear un bucle.",
+    example: "requestAnimationFrame(animate);",
     action: () => {
       startAnimation();
     }
   }
+
 ];
 
 const input = document.getElementById("userInput");
@@ -126,6 +150,8 @@ function loadStep() {
 function updateCodeDisplay() {
   const codeDisplay = document.getElementById("codeDisplay");
   codeDisplay.textContent = codeLines.join("\n");
+
+  hljs.highlightElement(codeDisplay);
 }
 
 loadStep();
