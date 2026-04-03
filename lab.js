@@ -74,18 +74,21 @@ const steps = [
 
   {
     question: "material = new THREE.MeshStandardMaterial({ color: ____ });",
-    answer: "0x00ffcc", // opcional mantener
     validator: (input) => /^0x[0-9a-f]{6}$/i.test(input),
-    code: "material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });",
     explanation: "El material define la apariencia del objeto.",
-    hint: "Debe ser un color hexadecimal válido (0x + 6 caracteres).",
-    example: "0xff0000 // rojo",
-    action: () => {
+    hint: "Debe ser un color hexadecimal válido.",
+    example: "0xff0000",
+    action: (input) => {
+        const colorValue = parseInt(input);
         material = new THREE.MeshStandardMaterial({
-        color: 0x00ffcc,
+        color: colorValue,
         metalness: 0.5,
         roughness: 0.2
       });
+      if (currentMesh) {
+        currentMesh.material = material;
+      }
+      return `material = new THREE.MeshStandardMaterial({ color: ${input} });`;
     }
   },
 
