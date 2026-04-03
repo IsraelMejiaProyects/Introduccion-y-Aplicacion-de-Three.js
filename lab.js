@@ -456,6 +456,8 @@ function applyEditedCode() {
   // Background
   if (code.includes("scene.background") && 
       !/scene\.background\s*=\s*new THREE\.Color\(\s*0x[0-9a-fA-F]{6}\s*\)/.test(code)) {
+    const lineIndex = code.split("\n").findIndex(line => line.includes("scene.background"));
+    highlightErrorLine(lineIndex);
     feedback.textContent = "❌ Error en background → usa formato 0x000000";
     return;
   }
@@ -463,6 +465,9 @@ function applyEditedCode() {
   // Camera
   if (code.includes("camera.position.set") &&
       !/camera\.position\.set\(\s*[-\d.]+\s*,\s*[-\d.]+\s*,\s*[-\d.]+\s*\)/.test(code)) {
+    const lineIndex = code.split("\n").findIndex(line => line.includes("camera.position.set"));
+    highlightErrorLine(lineIndex);
+
     feedback.textContent = "❌ Error en cámara → usa camera.position.set(x, y, z)";
     return;
   }
@@ -470,6 +475,8 @@ function applyEditedCode() {
   // Material
   if (code.includes("MeshStandardMaterial") &&
       !/color:\s*0x[0-9a-fA-F]{6}/.test(code)) {
+    const lineIndex = code.split("\n").findIndex(line => line.includes("MeshStandardMaterial"));
+    highlightErrorLine(lineIndex);
     feedback.textContent = "❌ Error en material → color debe ser hexadecimal (0xff0000)";
     return;
   }
@@ -477,6 +484,8 @@ function applyEditedCode() {
   // Ambient Light
   if (code.includes("AmbientLight") &&
       !/AmbientLight\(\s*0xffffff\s*,\s*[-\d.]+\s*\)/.test(code)) {
+    const lineIndex = code.split("\n").findIndex(line => line.includes("AmbientLight"));
+    highlightErrorLine(lineIndex);
     feedback.textContent = "❌ Error en luz ambiental → usa intensidad numérica";
     return;
   }
@@ -484,6 +493,8 @@ function applyEditedCode() {
   // Point Light
   if (code.includes("PointLight") &&
       !/PointLight\(\s*0xffffff\s*,\s*[-\d.]+\s*\)/.test(code)) {
+    const lineIndex = code.split("\n").findIndex(line => line.includes("PointLight"));
+    highlightErrorLine(lineIndex);
     feedback.textContent = "❌ Error en luz puntual → usa intensidad válida";
     return;
   }
@@ -491,6 +502,8 @@ function applyEditedCode() {
   // Rotation
   if (code.includes("rotationSpeed") &&
       !/rotationSpeed\s*=\s*[-\d.]+/.test(code)) {
+    const lineIndex = code.split("\n").findIndex(line => line.includes("rotationSpeed"));
+    highlightErrorLine(lineIndex);
     feedback.textContent = "❌ Error en rotación → usa número (ej: 0.01)";
     return;
   }
@@ -500,6 +513,7 @@ function applyEditedCode() {
   applyState();
 
   feedback.textContent = "✅ Cambios aplicados correctamente";
+  clearHighlight();
 }
 
 function highlightErrorLine(lineNumber) {
