@@ -279,16 +279,15 @@ input[type="text"] {
 }
 
 .controls-panel {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 220px;
-  padding: 12px;
-  border-radius: 10px;
-  background: rgba(13, 17, 23, 0.85);
-  backdrop-filter: blur(6px);
-  border: 1px solid #30363d;
-  z-index: 10;
+    position: absolute;
+    top: 55px;
+    width: 260px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(13, 17, 23, 0.85);
+    backdrop-filter: blur(6px);
+    border: 1px solid #30363d;
+    z-index: 10;
 }
 
 
