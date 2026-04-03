@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Laboratorio - Three.js</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -14,20 +13,22 @@
   <nav>
     <a href="index.html">Inicio</a>
     <a href="fundamentos.html">Fundamentos</a>
-    <a href="lab.html">Laboratorio</a>
+    <a href="lab.html" aria-current="page">Laboratorio</a>
   </nav>
 </header>
 
-<!-- 🔥 NUEVO: barra de progreso -->
-<div id="progressContainer">
+<div id="progressContainer" aria-hidden="true">
   <div id="progressBar"></div>
 </div>
 
 <main class="lab-grid">
-
   <section class="panel code-panel">
-    <h2>Código</h2>
-    <textarea id="codeEditor" class="editor" readonly spellcheck="false"></textarea>
+    <div class="panel-title-row">
+      <h2>Código</h2>
+      <span id="modeBadge" class="mode-badge">Modo guiado</span>
+    </div>
+
+    <textarea id="codeEditor" class="editor" readonly spellcheck="false" aria-label="Editor de código"></textarea>
 
     <div class="editor-actions">
       <button id="applyBtn" type="button" disabled>Aplicar cambios</button>
@@ -36,7 +37,10 @@
   </section>
 
   <section class="panel help-panel">
-    <h2>Asistencia</h2>
+    <div class="panel-title-row">
+      <h2>Asistencia</h2>
+      <span id="stepCount" class="step-count"></span>
+    </div>
     <p id="progress" class="progress"></p>
     <p id="instruction" class="instruction"></p>
     <p id="explanation" class="explanation"></p>
@@ -45,10 +49,11 @@
   </section>
 
   <section class="panel scene-panel">
-    <h2>Escena</h2>
+    <div class="panel-title-row">
+      <h2>Escena</h2>
+    </div>
     <div id="scene-container"></div>
   </section>
-
 </main>
 
 <section class="exercise-panel">
@@ -56,7 +61,7 @@
   <code id="exerciseCode" class="exercise-code"></code>
 
   <div class="exercise-row">
-    <input type="text" id="userInput" placeholder="Escribe aquí...">
+    <input type="text" id="userInput" placeholder="Escribe aquí..." autocomplete="off">
     <button id="checkBtn" type="button">Validar</button>
   </div>
 
