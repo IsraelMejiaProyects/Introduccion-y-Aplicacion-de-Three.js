@@ -10,54 +10,59 @@
 </head>
 <body>
 
-  <header>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="fundamentos.html">Fundamentos</a>
-      <a href="lab.html">Laboratorio</a>
-    </nav>
-  </header>
+<header>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="fundamentos.html">Fundamentos</a>
+    <a href="lab.html">Laboratorio</a>
+  </nav>
+</header>
 
-  <main class="lab-grid">
+<!-- 🔥 NUEVO: barra de progreso -->
+<div id="progressContainer">
+  <div id="progressBar"></div>
+</div>
 
-    <section class="panel code-panel">
-      <h2>Código</h2>
-      <textarea id="codeEditor" class="editor" readonly spellcheck="false"></textarea>
+<main class="lab-grid">
 
-      <div class="editor-actions">
-        <button id="applyBtn" type="button" disabled>Aplicar cambios</button>
-        <button id="resetBtn" type="button">Restaurar código</button>
-      </div>
-    </section>
+  <section class="panel code-panel">
+    <h2>Código</h2>
+    <textarea id="codeEditor" class="editor" readonly spellcheck="false"></textarea>
 
-    <section class="panel help-panel">
-      <h2>Asistencia</h2>
-      <p id="progress" class="progress"></p>
-      <p id="instruction" class="instruction"></p>
-      <p id="explanation" class="explanation"></p>
-      <p id="hint" class="hint"></p>
-      <pre id="example" class="example"></pre>
-    </section>
-
-    <section class="panel scene-panel">
-      <h2>Escena</h2>
-      <div id="scene-container"></div>
-    </section>
-
-  </main>
-
-  <section class="exercise-panel">
-    <h3>Ejercicio</h3>
-    <code id="exerciseCode" class="exercise-code"></code>
-
-    <div class="exercise-row">
-      <input type="text" id="userInput" placeholder="Escribe aquí...">
-      <button id="checkBtn" type="button">Validar</button>
+    <div class="editor-actions">
+      <button id="applyBtn" type="button" disabled>Aplicar cambios</button>
+      <button id="resetBtn" type="button">Restaurar código</button>
     </div>
-
-    <p id="feedback" class="feedback"></p>
   </section>
 
-  <script type="module" src="lab.js"></script>
+  <section class="panel help-panel">
+    <h2>Asistencia</h2>
+    <p id="progress" class="progress"></p>
+    <p id="instruction" class="instruction"></p>
+    <p id="explanation" class="explanation"></p>
+    <p id="hint" class="hint"></p>
+    <pre id="example" class="example"></pre>
+  </section>
+
+  <section class="panel scene-panel">
+    <h2>Escena</h2>
+    <div id="scene-container"></div>
+  </section>
+
+</main>
+
+<section class="exercise-panel">
+  <h3>Ejercicio</h3>
+  <code id="exerciseCode" class="exercise-code"></code>
+
+  <div class="exercise-row">
+    <input type="text" id="userInput" placeholder="Escribe aquí...">
+    <button id="checkBtn" type="button">Validar</button>
+  </div>
+
+  <p id="feedback" class="feedback"></p>
+</section>
+
+<script type="module" src="lab.js"></script>
 </body>
 </html>
