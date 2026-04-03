@@ -28,13 +28,18 @@ const steps = [
   {
     question: "const camera = new THREE.____(75, width/height, 0.1, 1000);",
     answer: "perspectivecamera",
-    code: "const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);",
-    action: () => {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+    code: "const camera = new THREE.PerspectiveCamera(...);",
 
-      camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-      camera.position.set(0, 0, 5);
+    explanation: "La cámara define desde qué punto se observa la escena.",
+    hint: "Es una cámara en perspectiva (como el ojo humano).",
+    example: "new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)",
+
+    action: () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        camera.position.set(0, 0, 5);
     }
   },
   {
@@ -115,6 +120,7 @@ const codeBlock = document.getElementById("exerciseCode");
 
 function loadStep() {
   codeBlock.textContent = steps[step].question;
+  updateHelp();
 }
 
 function updateCodeDisplay() {
@@ -187,3 +193,10 @@ window.addEventListener('resize', () => {
   renderer.setSize(width, height);
 
 });
+
+
+function updateHelp() {
+  document.getElementById("explanation").textContent = steps[step].explanation;
+  document.getElementById("hint").textContent = "💡 " + steps[step].hint;
+  document.getElementById("example").textContent = steps[step].example;
+}
