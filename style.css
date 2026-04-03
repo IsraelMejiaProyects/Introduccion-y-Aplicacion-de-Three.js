@@ -272,3 +272,17 @@ input[type="text"] {
   margin-bottom: 12px;
   font-size: 14px;
 }
+
+
+const shapeSelector = document.getElementById("shapeSelector");
+const rotationToggle = document.getElementById("rotationToggle");
+
+shapeSelector.addEventListener("change", (e) => {
+  sceneState.shape = e.target.value;
+  applyState();
+  syncCodeFromState();
+});
+
+rotationToggle.addEventListener("change", (e) => {
+  sceneState.rotationEnabled = e.target.value === "true";
+});

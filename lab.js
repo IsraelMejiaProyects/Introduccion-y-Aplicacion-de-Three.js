@@ -91,6 +91,7 @@ renderer.setSize(width, height);
 renderer.setPixelRatio(window.devicePixelRatio);`,
     action: () => {
       renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.shadowMap.enabled = true;
 
       const width = container.clientWidth;
       const height = container.clientHeight;
@@ -161,6 +162,7 @@ scene.add(currentMesh);`,
     action: () => {
       currentMesh = new THREE.Mesh(geometry, material);
       scene.add(currentMesh);
+      currentMesh.castShadow = true;
 
       return [
         "currentMesh = new THREE.Mesh(geometry, material);",
@@ -207,8 +209,23 @@ scene.add(light);`,
       const intensity = Number(inputValue);
 
       light = new THREE.PointLight(0xffffff, intensity);
+      light.castShadow = true;
       light.position.set(5, 5, 5);
       scene.add(light);
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 20),
+        new THREE.MeshStandardMaterial({
+          color: 0x222222,
+          metalness: 0.2,
+          roughness: 0.8
+        })
+      );
+
+      floor.rotation.x = -Math.PI / 2;
+      floor.position.y = -1.5;
+      floor.receiveShadow = true;
+
+      scene.add(floor);
 
       return [
         `light = new THREE.PointLight(0xffffff, ${intensity});`,
@@ -287,8 +304,23 @@ function createDefaultSceneState() {
     materialColor: DEFAULT_STATE.materialColor,
     ambientIntensity: DEFAULT_STATE.ambientIntensity,
     lightIntensity: DEFAULT_STATE.lightIntensity,
-    rotationSpeed: DEFAULT_STATE.rotationSpeed
+    rotationSpeed: DEFAULT_STATE.rotationSpeed,
+
+    // 🔥 NUEVO
+    shape: "cube",
+    rotationEnabled: true
   };
+}
+
+function createGeometry(type) {
+  switch(type) {
+    case "sphere":
+      return new THREE.SphereGeometry(1, 32, 32);
+    case "torus":
+      return new THREE.TorusGeometry(0.7, 0.3, 16, 100);
+    default:
+      return new THREE.BoxGeometry();
+  }
 }
 
 function updateProgress() {
@@ -326,7 +358,7 @@ function startAnimation() {
   function animate() {
     requestAnimationFrame(animate);
 
-    if (currentMesh) {
+    if (currentMesh && sceneState.rotationEnabled) {
       currentMesh.rotation.y += rotationSpeed;
     }
 
@@ -370,9 +402,23 @@ function applyState() {
     material.needsUpdate = true;
   }
 
-  if (currentMesh && material) {
-    currentMesh.material = material;
+  if (currentMesh) {
+    scene.remove(currentMesh);
   }
+
+  geometry = createGeometry(sceneState.shape);
+
+  material = new THREE.MeshStandardMaterial({
+    color: sceneState.materialColor,
+    metalness: 0.5,
+    roughness: 0.2
+  });
+
+  currentMesh = new THREE.Mesh(geometry, material);
+  currentMesh.castShadow = true;
+
+  scene.add(currentMesh);  
+
 
   if (ambientLight) {
     ambientLight.intensity = sceneState.ambientIntensity;
