@@ -22,8 +22,10 @@
 
     <section class="panel code-panel">
       <h2>Código</h2>
-      <textarea id="codeEditor" class="editor" readonly spellcheck="false"></textarea>
-
+      <div class="editor-wrapper">
+        <pre id="editorOverlay" class="editor-overlay"></pre>
+        <textarea id="codeEditor" class="editor" spellcheck="false"></textarea>
+      </div>
       <div class="editor-actions">
         <button id="applyBtn" type="button" disabled>Aplicar cambios</button>
         <button id="resetBtn" type="button">Restaurar código</button>

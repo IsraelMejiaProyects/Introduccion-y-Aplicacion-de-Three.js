@@ -502,6 +502,23 @@ function applyEditedCode() {
   feedback.textContent = "✅ Cambios aplicados correctamente";
 }
 
+function highlightErrorLine(lineNumber) {
+  const lines = codeEditor.value.split("\n");
+
+  const overlayContent = lines.map((line, index) => {
+    if (index === lineNumber) {
+      return `<span class="error-line">${line || " "}</span>`;
+    }
+    return line || " ";
+  }).join("\n");
+
+  document.getElementById("editorOverlay").innerHTML = overlayContent;
+}
+
+function clearHighlight() {
+  document.getElementById("editorOverlay").innerHTML = codeEditor.value;
+}
+
 function disposeCurrentObjects() {
   if (controls) {
     controls.dispose();
