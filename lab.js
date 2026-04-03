@@ -17,28 +17,29 @@ let codeLines = [];
 // PASOS
 const steps = [
 
+  // 1. SCENE
   {
     question: "const scene = new THREE.____();",
     answer: "scene",
     code: "const scene = new THREE.Scene();",
-    explanation: "Contenedor principal de la escena.",
-    hint: "Clase base del entorno.",
+    explanation: "La escena es el contenedor principal donde se agregan todos los objetos.",
+    hint: "Es la base del entorno 3D.",
     example: "new THREE.Scene()",
     action: () => {
       scene = new THREE.Scene();
 
-      // 🔥 LUZ BASE (evita pantalla negra)
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
       scene.add(ambientLight);
     }
   },
 
+  // 2. CAMERA
   {
     question: "const camera = new THREE.____(75, width/height, 0.1, 1000);",
     answer: "perspectivecamera",
-    code: "const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);",
-    explanation: "Define la vista.",
-    hint: "Simula visión humana.",
+    code: "const camera = new THREE.PerspectiveCamera(...);",
+    explanation: "Define desde dónde se observa la escena.",
+    hint: "Simula la visión humana.",
     example: "PerspectiveCamera",
     action: () => {
       const width = container.clientWidth;
@@ -49,12 +50,13 @@ const steps = [
     }
   },
 
+  // 3. RENDERER
   {
     question: "const renderer = new THREE.____({ antialias: true });",
     answer: "webglrenderer",
     code: "const renderer = new THREE.WebGLRenderer({ antialias: true });",
-    explanation: "Renderiza la escena.",
-    hint: "Usa WebGL.",
+    explanation: "Renderiza la escena en pantalla.",
+    hint: "Utiliza WebGL.",
     example: "WebGLRenderer",
     action: () => {
       renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -65,31 +67,32 @@ const steps = [
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
 
-      // 🔥 iniciar render aquí
       startAnimation();
     }
   },
 
+  // 4. GEOMETRY
   {
     question: "geometry = new THREE.____();",
     answer: "boxgeometry",
     code: "geometry = new THREE.BoxGeometry();",
-    explanation: "Forma del objeto.",
-    hint: "Cubo.",
+    explanation: "Define la forma del objeto.",
+    hint: "Es un cubo.",
     example: "BoxGeometry",
     action: () => {
       geometry = new THREE.BoxGeometry();
     }
   },
 
+  // 🔥 5. COLOR (ANTES DE CREAR EL MESH)
   {
     question: "material = new THREE.MeshStandardMaterial({ color: ____ });",
 
     validator: (input) => /^0x[0-9a-f]{6}$/i.test(input),
 
-    explanation: "Define la apariencia.",
-    hint: "Color hexadecimal.",
-    example: "0xff0000",
+    explanation: "El color define la apariencia del objeto. Aquí podrás ver cambios visuales inmediatos.",
+    hint: "Debe ser un valor hexadecimal (0x + 6 caracteres).",
+    example: "0xff0000 // rojo",
 
     action: (input) => {
 
@@ -101,20 +104,17 @@ const steps = [
         roughness: 0.2
       });
 
-      if (currentMesh) {
-        currentMesh.material = material;
-      }
-
       return `material = new THREE.MeshStandardMaterial({ color: ${input} });`;
     }
   },
 
+  // 6. MESH
   {
     question: "currentMesh = new THREE.____(geometry, material);",
     answer: "mesh",
     code: "currentMesh = new THREE.Mesh(geometry, material);",
-    explanation: "Objeto visible.",
-    hint: "Combina geometría + material.",
+    explanation: "Aquí se crea el objeto visible en la escena.",
+    hint: "Combina geometría y material.",
     example: "Mesh",
     action: () => {
       currentMesh = new THREE.Mesh(geometry, material);
@@ -122,14 +122,15 @@ const steps = [
     }
   },
 
+  // 7. LUZ DINÁMICA
   {
     question: "light = new THREE.PointLight(0xffffff, ____);",
 
     validator: (input) => !isNaN(input) && Number(input) > 0,
 
-    explanation: "Intensidad de luz.",
-    hint: "Número mayor a 0.",
-    example: "1.5",
+    explanation: "La luz permite ver el objeto y su intensidad afecta el brillo.",
+    hint: "Puede ser 0.5, 1, 2, etc.",
+    example: "2",
 
     action: (input) => {
 
@@ -144,11 +145,12 @@ const steps = [
     }
   },
 
+  // 8. CONTROLES
   {
     question: "const controls = new ____ (camera, renderer.domElement);",
     answer: "orbitcontrols",
     code: "const controls = new OrbitControls(camera, renderer.domElement);",
-    explanation: "Control de cámara.",
+    explanation: "Permite mover la cámara con el mouse.",
     hint: "OrbitControls.",
     example: "OrbitControls",
     action: () => {
@@ -156,11 +158,12 @@ const steps = [
     }
   },
 
+  // 9. ANIMACIÓN
   {
     question: "function animate() { requestAnimationFrame(____); }",
     answer: "animate",
     code: "function animate() { requestAnimationFrame(animate); }",
-    explanation: "Loop de render.",
+    explanation: "Hace que la escena se actualice continuamente.",
     hint: "Se llama a sí misma.",
     example: "animate",
     action: () => {
@@ -233,6 +236,8 @@ btn.addEventListener("click", () => {
       loadStep();
     } else {
       feedback.textContent = "🎉 Laboratorio completado";
+      
+      enableEditMode();
     }
 
   } else {
@@ -283,3 +288,35 @@ window.addEventListener('resize', () => {
 
 // INICIO
 loadStep();
+
+
+function enableEditMode() {
+
+  const panel = document.createElement("div");
+  panel.style.padding = "20px";
+  panel.innerHTML = `
+    <h3>Modo edición</h3>
+
+    <label>Color:</label>
+    <input type="color" id="colorPicker" value="#00ffcc">
+
+    <label>Intensidad de luz:</label>
+    <input type="range" id="lightRange" min="0" max="5" step="0.1" value="1">
+  `;
+
+  document.body.appendChild(panel);
+
+  // COLOR DINÁMICO
+  document.getElementById("colorPicker").addEventListener("input", (e) => {
+    if (currentMesh) {
+      currentMesh.material.color.set(e.target.value);
+    }
+  });
+
+  // LUZ DINÁMICA
+  document.getElementById("lightRange").addEventListener("input", (e) => {
+    if (light) {
+      light.intensity = e.target.value;
+    }
+  });
+}
