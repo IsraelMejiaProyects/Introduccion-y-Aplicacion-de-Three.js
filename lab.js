@@ -450,9 +450,56 @@ function parseEditedCode(code) {
 
 function applyEditedCode() {
   const code = codeEditor.value;
+
+  // ===== VALIDACIONES =====
+
+  // Background
+  if (code.includes("scene.background") && 
+      !/scene\.background\s*=\s*new THREE\.Color\(\s*0x[0-9a-fA-F]{6}\s*\)/.test(code)) {
+    feedback.textContent = "❌ Error en background → usa formato 0x000000";
+    return;
+  }
+
+  // Camera
+  if (code.includes("camera.position.set") &&
+      !/camera\.position\.set\(\s*[-\d.]+\s*,\s*[-\d.]+\s*,\s*[-\d.]+\s*\)/.test(code)) {
+    feedback.textContent = "❌ Error en cámara → usa camera.position.set(x, y, z)";
+    return;
+  }
+
+  // Material
+  if (code.includes("MeshStandardMaterial") &&
+      !/color:\s*0x[0-9a-fA-F]{6}/.test(code)) {
+    feedback.textContent = "❌ Error en material → color debe ser hexadecimal (0xff0000)";
+    return;
+  }
+
+  // Ambient Light
+  if (code.includes("AmbientLight") &&
+      !/AmbientLight\(\s*0xffffff\s*,\s*[-\d.]+\s*\)/.test(code)) {
+    feedback.textContent = "❌ Error en luz ambiental → usa intensidad numérica";
+    return;
+  }
+
+  // Point Light
+  if (code.includes("PointLight") &&
+      !/PointLight\(\s*0xffffff\s*,\s*[-\d.]+\s*\)/.test(code)) {
+    feedback.textContent = "❌ Error en luz puntual → usa intensidad válida";
+    return;
+  }
+
+  // Rotation
+  if (code.includes("rotationSpeed") &&
+      !/rotationSpeed\s*=\s*[-\d.]+/.test(code)) {
+    feedback.textContent = "❌ Error en rotación → usa número (ej: 0.01)";
+    return;
+  }
+
+  // ===== SI TODO PASA =====
   sceneState = parseEditedCode(code);
   applyState();
-  feedback.textContent = "✅ Cambios aplicados y sincronizados con la escena.";
+
+  feedback.textContent = "✅ Cambios aplicados correctamente";
 }
 
 function disposeCurrentObjects() {
