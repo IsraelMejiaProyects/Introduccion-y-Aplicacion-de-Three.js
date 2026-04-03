@@ -149,7 +149,11 @@ function loadStep() {
 
 function updateCodeDisplay() {
   const codeDisplay = document.getElementById("codeDisplay");
+
   codeDisplay.textContent = codeLines.join("\n");
+
+  // limpiar antes de aplicar highlight
+  codeDisplay.removeAttribute("data-highlighted");
 
   hljs.highlightElement(codeDisplay);
 }
@@ -164,16 +168,17 @@ btn.addEventListener("click", () => {
 
     feedback.textContent = "✅ Correcto";
 
-    // Ejecutar lógica
+    // 👉 EJECUTA LA ACCIÓN
     steps[step].action();
 
-    // Agregar código acumulado
+    // 👉 AGREGA LA LÍNEA AL CÓDIGO
     codeLines.push(steps[step].code);
 
-    // Actualizar editor
+    console.log("Código acumulado:", codeLines); // 🔍 DEBUG
+
+    // 👉 ACTUALIZA VISUAL
     updateCodeDisplay();
 
-    // Avanzar paso
     step++;
     input.value = "";
 
