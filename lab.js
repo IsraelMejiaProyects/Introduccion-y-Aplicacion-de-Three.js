@@ -9,6 +9,17 @@ let rotationSpeed = 0.01;
 let animationStarted = false;
 let editorLocked = true;
 
+const DEFAULT_STATE = {
+  background: 0x0d1117,
+  camera: { x: 0, y: 0, z: 5 },
+  materialColor: 0xff0000,
+  ambientIntensity: 0.4,
+  lightIntensity: 1,
+  rotationSpeed: 0.01
+};
+
+let sceneState = createDefaultSceneState();
+
 const container = document.getElementById('scene-container');
 const codeEditor = document.getElementById('codeEditor');
 const applyBtn = document.getElementById('applyBtn');
@@ -156,7 +167,10 @@ scene.add(currentMesh);`,
   },
   {
     question: "ambientLight = new THREE.____(0xffffff, ____);",
-    validator: (inputValue) => !Number.isNaN(Number(inputValue)) && Number(inputValue) >= 0,
+    validator: (inputValue) => {
+      const value = Number(inputValue);
+      return !Number.isNaN(value) && value >= 0;
+    },
     explanation: "La luz ambiental ilumina toda la escena de forma suave.",
     hint: "Sirve para evitar que la escena quede negra.",
     example:
@@ -176,7 +190,10 @@ scene.add(ambientLight);`,
   },
   {
     question: "light = new THREE.PointLight(0xffffff, ____);",
-    validator: (inputValue) => !Number.isNaN(Number(inputValue)) && Number(inputValue) > 0,
+    validator: (inputValue) => {
+      const value = Number(inputValue);
+      return !Number.isNaN(value) && value > 0;
+    },
     explanation: "La luz puntual ilumina una zona específica y da profundidad al objeto.",
     hint: "Puedes usar un número mayor que 0, como 0.8, 1 o 2.",
     example:
@@ -212,14 +229,16 @@ scene.add(light);`,
   },
   {
     question: "rotationSpeed = ____;",
-    validator: (inputValue) => !Number.isNaN(Number(inputValue)) && Number(inputValue) > 0,
+    validator: (inputValue) => {
+      const value = Number(inputValue);
+      return !Number.isNaN(value) && value > 0;
+    },
     explanation: "La velocidad de rotación permite ajustar qué tan rápido gira el objeto.",
     hint: "Usa un número pequeño, por ejemplo 0.01 o 0.03.",
     example:
 `rotationSpeed = 0.01;`,
     action: (inputValue) => {
       rotationSpeed = Number(inputValue);
-
       return `rotationSpeed = ${rotationSpeed};`;
     }
   },
@@ -258,6 +277,17 @@ scene.add(light);`,
   }
 ];
 
+function createDefaultSceneState() {
+  return {
+    background: DEFAULT_STATE.background,
+    camera: { ...DEFAULT_STATE.camera },
+    materialColor: DEFAULT_STATE.materialColor,
+    ambientIntensity: DEFAULT_STATE.ambientIntensity,
+    lightIntensity: DEFAULT_STATE.lightIntensity,
+    rotationSpeed: DEFAULT_STATE.rotationSpeed
+  };
+}
+
 function updateProgress() {
   progress.textContent = `Paso ${Math.min(step + 1, steps.length)} de ${steps.length}`;
 }
@@ -274,6 +304,7 @@ function updateHelp() {
 
 function updateCodeEditor() {
   if (!editorLocked) return;
+
   codeEditor.value = codeLines.length
     ? codeLines.join("\n")
     : "// El código se construirá aquí paso a paso...";
@@ -316,65 +347,179 @@ function finalizeLaboratory() {
   updateProgress();
 }
 
-function applyEditedCode() {
-  const code = codeEditor.value;
+function applyState() {
+  if (scene) {
+    scene.background = new THREE.Color(sceneState.background);
+  }
+
+  if (camera) {
+    camera.position.set(
+      sceneState.camera.x,
+      sceneState.camera.y,
+      sceneState.camera.z
+    );
+    camera.updateProjectionMatrix();
+  }
+
+  if (material) {
+    material.color.set(sceneState.materialColor);
+    material.needsUpdate = true;
+  }
+
+  if (currentMesh && material) {
+    currentMesh.material = material;
+  }
+
+  if (ambientLight) {
+    ambientLight.intensity = sceneState.ambientIntensity;
+  }
+
+  if (light) {
+    light.intensity = sceneState.lightIntensity;
+  }
+
+  rotationSpeed = sceneState.rotationSpeed;
+
+  renderSceneOnce();
+}
+
+function parseEditedCode(code) {
+  const nextState = createDefaultSceneState();
+  nextState.background = sceneState.background;
+  nextState.camera = { ...sceneState.camera };
+  nextState.materialColor = sceneState.materialColor;
+  nextState.ambientIntensity = sceneState.ambientIntensity;
+  nextState.lightIntensity = sceneState.lightIntensity;
+  nextState.rotationSpeed = sceneState.rotationSpeed;
 
   const bgMatch = code.match(/scene\.background\s*=\s*new THREE\.Color\(\s*(0x[0-9a-fA-F]{6})\s*\)/);
-  if (bgMatch && scene) {
-    scene.background = new THREE.Color(bgMatch[1]);
+  if (bgMatch) {
+    nextState.background = Number(bgMatch[1]);
   }
 
-  const cameraPosMatch = code.match(/camera\.position\.set\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/);
-  if (cameraPosMatch && camera) {
-    camera.position.set(
-      Number(cameraPosMatch[1]),
-      Number(cameraPosMatch[2]),
-      Number(cameraPosMatch[3])
-    );
+  const cameraPosMatch = code.match(
+    /camera\.position\.set\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/
+  );
+  if (cameraPosMatch) {
+    const x = Number(cameraPosMatch[1]);
+    const y = Number(cameraPosMatch[2]);
+    const z = Number(cameraPosMatch[3]);
+
+    if ([x, y, z].every(Number.isFinite)) {
+      nextState.camera = { x, y, z };
+    }
   }
 
-  const materialMatch = code.match(/material\s*=\s*new THREE\.MeshStandardMaterial\(\{\s*color:\s*(0x[0-9a-fA-F]{6})/);
+  const materialMatch = code.match(
+    /material\s*=\s*new THREE\.MeshStandardMaterial\(\{\s*color:\s*(0x[0-9a-fA-F]{6})/
+  );
   if (materialMatch) {
-    const colorValue = materialMatch[1];
+    nextState.materialColor = Number(materialMatch[1]);
+  }
 
-    if (!material) {
-      material = new THREE.MeshStandardMaterial({
-        color: Number(colorValue),
-        metalness: 0.5,
-        roughness: 0.2
-      });
-    } else {
-      material.color.set(colorValue);
-      material.needsUpdate = true;
-    }
-
-    if (currentMesh) {
-      currentMesh.material = material;
+  const ambientMatch = code.match(
+    /ambientLight\s*=\s*new THREE\.AmbientLight\(\s*0xffffff\s*,\s*([-\d.]+)\s*\)/
+  );
+  if (ambientMatch) {
+    const intensity = Number(ambientMatch[1]);
+    if (Number.isFinite(intensity) && intensity >= 0) {
+      nextState.ambientIntensity = intensity;
     }
   }
 
-  const ambientMatch = code.match(/ambientLight\s*=\s*new THREE\.AmbientLight\(\s*0xffffff\s*,\s*([-\d.]+)\s*\)/);
-  if (ambientMatch && ambientLight) {
-    ambientLight.intensity = Number(ambientMatch[1]);
-  }
-
-  const lightMatch = code.match(/light\s*=\s*new THREE\.PointLight\(\s*0xffffff\s*,\s*([-\d.]+)\s*\)/);
-  if (lightMatch && light) {
-    light.intensity = Number(lightMatch[1]);
+  const lightMatch = code.match(
+    /light\s*=\s*new THREE\.PointLight\(\s*0xffffff\s*,\s*([-\d.]+)\s*\)/
+  );
+  if (lightMatch) {
+    const intensity = Number(lightMatch[1]);
+    if (Number.isFinite(intensity) && intensity > 0) {
+      nextState.lightIntensity = intensity;
+    }
   }
 
   const rotationMatch = code.match(/rotationSpeed\s*=\s*([-\d.]+)/);
   if (rotationMatch) {
-    rotationSpeed = Number(rotationMatch[1]);
+    const speed = Number(rotationMatch[1]);
+    if (Number.isFinite(speed) && speed > 0) {
+      nextState.rotationSpeed = speed;
+    }
   }
 
-  renderSceneOnce();
-  feedback.textContent = "✅ Cambios aplicados al laboratorio.";
+  return nextState;
 }
 
-function restoreGeneratedCode() {
-  codeEditor.value = codeLines.join("\n");
-  feedback.textContent = "↩ Código restaurado al generado por el laboratorio.";
+function applyEditedCode() {
+  const code = codeEditor.value;
+  sceneState = parseEditedCode(code);
+  applyState();
+  feedback.textContent = "✅ Cambios aplicados y sincronizados con la escena.";
+}
+
+function disposeCurrentObjects() {
+  if (controls) {
+    controls.dispose();
+    controls = null;
+  }
+
+  if (currentMesh && scene) {
+    scene.remove(currentMesh);
+  }
+  if (currentMesh?.geometry) {
+    currentMesh.geometry.dispose();
+  }
+  if (currentMesh?.material) {
+    if (Array.isArray(currentMesh.material)) {
+      currentMesh.material.forEach((m) => m.dispose && m.dispose());
+    } else if (currentMesh.material.dispose) {
+      currentMesh.material.dispose();
+    }
+  }
+
+  if (ambientLight && scene) {
+    scene.remove(ambientLight);
+  }
+
+  if (light && scene) {
+    scene.remove(light);
+  }
+
+  if (renderer) {
+    renderer.dispose();
+    if (renderer.domElement && renderer.domElement.parentNode) {
+      renderer.domElement.parentNode.removeChild(renderer.domElement);
+    }
+  }
+
+  if (container) {
+    container.innerHTML = '';
+  }
+
+  scene = null;
+  camera = null;
+  renderer = null;
+  geometry = null;
+  material = null;
+  currentMesh = null;
+  ambientLight = null;
+  light = null;
+}
+
+function hardResetLab() {
+  disposeCurrentObjects();
+
+  step = 0;
+  codeLines = [];
+  sceneState = createDefaultSceneState();
+
+  editorLocked = true;
+  codeEditor.setAttribute("readonly", "readonly");
+  codeEditor.value = "// El código se construirá aquí paso a paso...";
+  applyBtn.disabled = true;
+  input.value = "";
+  feedback.textContent = "↩ Laboratorio reiniciado desde cero.";
+
+  updateHelp();
+  updateCodeEditor();
 }
 
 btn.addEventListener("click", () => {
@@ -415,7 +560,7 @@ btn.addEventListener("click", () => {
 });
 
 applyBtn.addEventListener("click", applyEditedCode);
-resetBtn.addEventListener("click", restoreGeneratedCode);
+resetBtn.addEventListener("click", hardResetLab);
 
 window.addEventListener("resize", () => {
   if (!renderer || !camera) return;
@@ -432,3 +577,5 @@ window.addEventListener("resize", () => {
 
 updateHelp();
 updateCodeEditor();
+applyBtn.disabled = true;
+codeEditor.setAttribute("readonly", "readonly");
