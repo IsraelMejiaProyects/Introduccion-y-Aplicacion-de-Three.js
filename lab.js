@@ -33,6 +33,9 @@ const instruction = document.getElementById('instruction');
 const explanation = document.getElementById('explanation');
 const hint = document.getElementById('hint');
 const example = document.getElementById('example');
+const ambientSlider = document.getElementById("ambientSlider");
+const lightSlider = document.getElementById("lightSlider");
+const rotationSlider = document.getElementById("rotationSlider");
 
 let step = 0;
 let codeLines = [];
@@ -340,6 +343,7 @@ function startAnimation() {
 }
 
 function finalizeLaboratory() {
+  setupControls();
   editorLocked = false;
   codeEditor.removeAttribute("readonly");
   applyBtn.disabled = false;
@@ -653,7 +657,57 @@ window.addEventListener("resize", () => {
   renderSceneOnce();
 });
 
+function setupControls() {
+  ambientSlider.value = sceneState.ambientIntensity;
+  lightSlider.value = sceneState.lightIntensity;
+  rotationSlider.value = sceneState.rotationSpeed;
+
+  ambientSlider.addEventListener("input", () => {
+    sceneState.ambientIntensity = Number(ambientSlider.value);
+    applyState();
+    syncCodeFromState();
+  });
+
+  lightSlider.addEventListener("input", () => {
+    sceneState.lightIntensity = Number(lightSlider.value);
+    applyState();
+    syncCodeFromState();
+  });
+
+  rotationSlider.addEventListener("input", () => {
+    sceneState.rotationSpeed = Number(rotationSlider.value);
+    applyState();
+    syncCodeFromState();
+  });
+}
+
+
+function syncCodeFromState() {
+  let code = codeEditor.value;
+
+  code = code.replace(
+    /ambientLight\s*=\s*new THREE\.AmbientLight\(0xffffff,\s*[-\d.]+\)/,
+    `ambientLight = new THREE.AmbientLight(0xffffff, ${sceneState.ambientIntensity})`
+  );
+
+  code = code.replace(
+    /light\s*=\s*new THREE\.PointLight\(0xffffff,\s*[-\d.]+\)/,
+    `light = new THREE.PointLight(0xffffff, ${sceneState.lightIntensity})`
+  );
+
+  code = code.replace(
+    /rotationSpeed\s*=\s*[-\d.]+/,
+    `rotationSpeed = ${sceneState.rotationSpeed}`
+  );
+
+  codeEditor.value = code;
+}
+
+
+
 updateHelp();
 updateCodeEditor();
 applyBtn.disabled = true;
 codeEditor.setAttribute("readonly", "readonly");
+
+
