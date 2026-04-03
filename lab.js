@@ -10,22 +10,26 @@ let animationStarted = false;
 
 const container = document.getElementById('scene-container');
 
-// CONTROL DE PASOS
+// CONTROL
 let step = 0;
 let codeLines = [];
 
-// PASOS COMPLETOS
+// PASOS
 const steps = [
 
   {
     question: "const scene = new THREE.____();",
     answer: "scene",
     code: "const scene = new THREE.Scene();",
-    explanation: "La escena es el contenedor principal donde se agregan todos los objetos 3D.",
-    hint: "Empieza con 'Scene'.",
-    example: "const scene = new THREE.Scene();",
+    explanation: "Contenedor principal de la escena.",
+    hint: "Clase base del entorno.",
+    example: "new THREE.Scene()",
     action: () => {
       scene = new THREE.Scene();
+
+      // 🔥 LUZ BASE (evita pantalla negra)
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambientLight);
     }
   },
 
@@ -33,12 +37,13 @@ const steps = [
     question: "const camera = new THREE.____(75, width/height, 0.1, 1000);",
     answer: "perspectivecamera",
     code: "const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);",
-    explanation: "La cámara define desde dónde se observa la escena.",
-    hint: "Simula la visión humana.",
-    example: "new THREE.PerspectiveCamera(...)",
+    explanation: "Define la vista.",
+    hint: "Simula visión humana.",
+    example: "PerspectiveCamera",
     action: () => {
       const width = container.clientWidth;
       const height = container.clientHeight;
+
       camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
       camera.position.set(0, 0, 5);
     }
@@ -48,15 +53,20 @@ const steps = [
     question: "const renderer = new THREE.____({ antialias: true });",
     answer: "webglrenderer",
     code: "const renderer = new THREE.WebGLRenderer({ antialias: true });",
-    explanation: "El renderer dibuja la escena en pantalla.",
-    hint: "Utiliza WebGL.",
-    example: "new THREE.WebGLRenderer()",
+    explanation: "Renderiza la escena.",
+    hint: "Usa WebGL.",
+    example: "WebGLRenderer",
     action: () => {
       renderer = new THREE.WebGLRenderer({ antialias: true });
+
       const width = container.clientWidth;
       const height = container.clientHeight;
+
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
+
+      // 🔥 iniciar render aquí
+      startAnimation();
     }
   },
 
@@ -64,9 +74,9 @@ const steps = [
     question: "geometry = new THREE.____();",
     answer: "boxgeometry",
     code: "geometry = new THREE.BoxGeometry();",
-    explanation: "Define la forma del objeto.",
-    hint: "Es un cubo.",
-    example: "new THREE.BoxGeometry()",
+    explanation: "Forma del objeto.",
+    hint: "Cubo.",
+    example: "BoxGeometry",
     action: () => {
       geometry = new THREE.BoxGeometry();
     }
@@ -77,36 +87,35 @@ const steps = [
 
     validator: (input) => /^0x[0-9a-f]{6}$/i.test(input),
 
-    explanation: "El material define la apariencia del objeto.",
-    hint: "Debe ser un color hexadecimal válido.",
+    explanation: "Define la apariencia.",
+    hint: "Color hexadecimal.",
     example: "0xff0000",
 
     action: (input) => {
 
-        const colorValue = parseInt(input);
+      const colorValue = parseInt(input);
 
-        material = new THREE.MeshStandardMaterial({
+      material = new THREE.MeshStandardMaterial({
         color: colorValue,
         metalness: 0.5,
         roughness: 0.2
-        });
+      });
 
-        // 🔥 aplicar si ya existe mesh
-        if (currentMesh) {
+      if (currentMesh) {
         currentMesh.material = material;
-        }
+      }
 
-        return `material = new THREE.MeshStandardMaterial({ color: ${input} });`;
+      return `material = new THREE.MeshStandardMaterial({ color: ${input} });`;
     }
-    },
+  },
 
   {
     question: "currentMesh = new THREE.____(geometry, material);",
     answer: "mesh",
     code: "currentMesh = new THREE.Mesh(geometry, material);",
-    explanation: "Combina geometría y material.",
-    hint: "Objeto visible final.",
-    example: "new THREE.Mesh(...)",
+    explanation: "Objeto visible.",
+    hint: "Combina geometría + material.",
+    example: "Mesh",
     action: () => {
       currentMesh = new THREE.Mesh(geometry, material);
       scene.add(currentMesh);
@@ -115,15 +124,23 @@ const steps = [
 
   {
     question: "light = new THREE.PointLight(0xffffff, ____);",
-    answer: "1",
-    code: "light = new THREE.PointLight(0xffffff, 1);",
-    explanation: "La luz permite ver el objeto.",
-    hint: "Número de intensidad.",
-    example: "new THREE.PointLight(...)",
-    action: () => {
-      light = new THREE.PointLight(0xffffff, 1);
+
+    validator: (input) => !isNaN(input) && Number(input) > 0,
+
+    explanation: "Intensidad de luz.",
+    hint: "Número mayor a 0.",
+    example: "1.5",
+
+    action: (input) => {
+
+      const intensity = Number(input);
+
+      light = new THREE.PointLight(0xffffff, intensity);
       light.position.set(5, 5, 5);
+
       scene.add(light);
+
+      return `light = new THREE.PointLight(0xffffff, ${intensity});`;
     }
   },
 
@@ -131,9 +148,9 @@ const steps = [
     question: "const controls = new ____ (camera, renderer.domElement);",
     answer: "orbitcontrols",
     code: "const controls = new OrbitControls(camera, renderer.domElement);",
-    explanation: "Permite mover la cámara con el mouse.",
-    hint: "Control orbital.",
-    example: "new OrbitControls(...)",
+    explanation: "Control de cámara.",
+    hint: "OrbitControls.",
+    example: "OrbitControls",
     action: () => {
       controls = new OrbitControls(camera, renderer.domElement);
     }
@@ -143,9 +160,9 @@ const steps = [
     question: "function animate() { requestAnimationFrame(____); }",
     answer: "animate",
     code: "function animate() { requestAnimationFrame(animate); }",
-    explanation: "Permite actualizar la escena continuamente.",
+    explanation: "Loop de render.",
     hint: "Se llama a sí misma.",
-    example: "requestAnimationFrame(animate)",
+    example: "animate",
     action: () => {
       startAnimation();
     }
@@ -153,7 +170,7 @@ const steps = [
 
 ];
 
-// ELEMENTOS UI
+// UI
 const input = document.getElementById("userInput");
 const btn = document.getElementById("checkBtn");
 const feedback = document.getElementById("feedback");
@@ -176,13 +193,12 @@ function updateCodeDisplay() {
   const codeDisplay = document.getElementById("codeDisplay");
 
   codeDisplay.textContent = codeLines.join("\n");
-
   codeDisplay.removeAttribute("data-highlighted");
 
   hljs.highlightElement(codeDisplay);
 }
 
-// EVENTO BOTÓN
+// BOTÓN
 
 btn.addEventListener("click", () => {
 
@@ -200,9 +216,14 @@ btn.addEventListener("click", () => {
 
     feedback.textContent = "✅ Correcto";
 
-    steps[step].action();
+    const result = steps[step].action(userValue);
 
-    codeLines.push(steps[step].code);
+    if (result) {
+      codeLines.push(result);
+    } else {
+      codeLines.push(steps[step].code);
+    }
+
     updateCodeDisplay();
 
     step++;
