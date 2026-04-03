@@ -1,11 +1,5 @@
-// IMPORTS
 import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
-
 import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-
-// =========================
-// VARIABLES GLOBALES
-// =========================
 
 let scene, camera, renderer, controls;
 let geometry, material, currentMesh;
@@ -13,17 +7,11 @@ let light;
 
 let animationStarted = false;
 
-
-// =========================
-// CONTENEDOR
-// =========================
-
+// Validar contenedor
 const container = document.getElementById('scene-container');
-
-
-// =========================
-// SISTEMA DE PASOS
-// =========================
+if (!container) {
+  throw new Error("No existe el elemento #scene-container en el HTML");
+}
 
 let step = 0;
 
@@ -92,10 +80,14 @@ const steps = [
       light = new THREE.PointLight(0xffffff, 1);
       light.position.set(5, 5, 5);
       scene.add(light);
+
+      // Luz ambiental (mejora visual)
+      const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+      scene.add(ambient);
     }
   },
   {
-    question: "const controls = new ____ (camera, renderer.domElement);",
+    question: "// Escribe el nombre de la clase: new ____ (camera, renderer.domElement);",
     answer: "orbitcontrols",
     action: () => {
       controls = new OrbitControls(camera, renderer.domElement);
@@ -110,20 +102,16 @@ const steps = [
   }
 ];
 
-
-// =========================
-// UI ELEMENTOS
-// =========================
-
+// Elementos UI
 const input = document.getElementById("userInput");
 const btn = document.getElementById("checkBtn");
 const feedback = document.getElementById("feedback");
-const codeBlock = document.getElementById("exerciseCode");
+const codeBlock = document.querySelector("code");
 
-
-// =========================
-// FUNCIONES
-// =========================
+// Validar UI
+if (!input || !btn || !feedback || !codeBlock) {
+  throw new Error("Faltan elementos del DOM (input, botón, feedback o code)");
+}
 
 function loadStep() {
   codeBlock.textContent = steps[step].question;
@@ -131,18 +119,12 @@ function loadStep() {
 
 loadStep();
 
-
-// VALIDACIÓN
-
 btn.addEventListener("click", () => {
-
   const userValue = input.value.trim().toLowerCase();
 
   if (userValue === steps[step].answer) {
-
     feedback.textContent = "✅ Correcto";
 
-    // Ejecutar acción real
     steps[step].action();
 
     step++;
@@ -157,16 +139,9 @@ btn.addEventListener("click", () => {
   } else {
     feedback.textContent = "❌ Intenta de nuevo";
   }
-
 });
 
-
-// =========================
-// ANIMACIÓN
-// =========================
-
 function startAnimation() {
-
   if (animationStarted) return;
   animationStarted = true;
 
@@ -187,13 +162,7 @@ function startAnimation() {
   animate();
 }
 
-
-// =========================
-// RESPONSIVE
-// =========================
-
 window.addEventListener('resize', () => {
-
   if (!renderer || !camera) return;
 
   const width = container.clientWidth;
@@ -203,5 +172,4 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
 
   renderer.setSize(width, height);
-
 });
