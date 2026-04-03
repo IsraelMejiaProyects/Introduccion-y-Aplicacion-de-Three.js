@@ -88,3 +88,24 @@ main {
   min-height: 300px;
   white-space: pre-wrap;
 }
+
+
+
+
+.help-panel {
+  background-color: #161b22;
+  border-top: 1px solid #30363d;
+  padding: 15px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+#hint {
+  color: #58a6ff;
+}
+
+#example {
+  background-color: #0d1117;
+  padding: 10px;
+  border-radius: 6px;
+}

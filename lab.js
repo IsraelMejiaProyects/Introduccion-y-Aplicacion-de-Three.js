@@ -16,8 +16,13 @@ const steps = [
     question: "const scene = new THREE.____();",
     answer: "scene",
     code: "const scene = new THREE.Scene();",
+
+    explanation: "La escena es el contenedor principal donde se agregan todos los objetos 3D.",
+    hint: "Es una clase que representa el entorno completo. Empieza con 'Scene'.",
+    example: "const scene = new THREE.Scene();",
+
     action: () => {
-      scene = new THREE.Scene();
+        scene = new THREE.Scene();
     }
   },
   {
