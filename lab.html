@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Laboratorio Three.js</title>
+  <title>Laboratorio - Three.js</title>
 
   <!-- Fuente -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <nav>
       <a href="index.html">Inicio</a>
@@ -19,44 +20,48 @@
     </nav>
   </header>
 
-  <main>
-    <h1>Laboratorio Three.js</h1>
-    <p></p>
 
-    <a class="btn" href="lab.html"></a>
-    
-    <div class="lab-container">
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="lab-container">
 
-      <div class="code-panel">
-        <h2>Código</h2>
-        <pre id="codeDisplay">
-    // Aquí aparecerá el código
-        </pre>
-      </div>
+    <!-- PANEL DE CÓDIGO -->
+    <div class="code-panel">
+      <h2>Código</h2>
 
-      <div class="scene-panel">
-        <h2>Escena</h2>
-        <div id="scene-container"></div>
-      </div>
+      <pre id="codeDisplay">
+// Aquí se construirá el código paso a paso
+      </pre>
+
+      <h3>Ejercicio</h3>
+      <code id="exerciseCode"></code>
 
     </div>
 
-    <div class="exercise-panel">
-      <p id="instruction">Crea la escena escribiendo la palabra faltante:</p>
 
-      <code>
-        const scene = new THREE.____();
-      </code>
-
-      <input type="text" id="userInput">
-      <button id="checkBtn">Validar</button>
-
-      <p id="feedback"></p>
+    <!-- PANEL DE ESCENA -->
+    <div class="scene-panel">
+      <h2>Escena</h2>
+      <div id="scene-container"></div>
     </div>
 
-    <script type="module" src="lab.js"></script>
+  </div>
 
-  </main>
+
+  <!-- PANEL DE INTERACCIÓN -->
+  <div class="exercise-panel">
+
+    <p id="instruction">Completa el código:</p>
+
+    <input type="text" id="userInput" placeholder="Escribe aquí...">
+    <button id="checkBtn">Validar</button>
+
+    <p id="feedback"></p>
+
+  </div>
+
+
+  <!-- SCRIPT -->
+  <script type="module" src="lab.js"></script>
 
 </body>
 </html>
