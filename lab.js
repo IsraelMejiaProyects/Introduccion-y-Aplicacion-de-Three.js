@@ -74,13 +74,14 @@ const steps = [
 
   {
     question: "material = new THREE.MeshStandardMaterial({ color: ____ });",
-    answer: "0x00ffcc",
+    answer: "0x00ffcc", // opcional mantener
+    validator: (input) => /^0x[0-9a-f]{6}$/i.test(input),
     code: "material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });",
-    explanation: "Define la apariencia del objeto.",
-    hint: "Formato hexadecimal (0x...).",
-    example: "color: 0xff0000",
+    explanation: "El material define la apariencia del objeto.",
+    hint: "Debe ser un color hexadecimal válido (0x + 6 caracteres).",
+    example: "0xff0000 // rojo",
     action: () => {
-      material = new THREE.MeshStandardMaterial({
+        material = new THREE.MeshStandardMaterial({
         color: 0x00ffcc,
         metalness: 0.5,
         roughness: 0.2
@@ -176,7 +177,15 @@ btn.addEventListener("click", () => {
 
   const userValue = input.value.trim().toLowerCase();
 
-  if (userValue === steps[step].answer) {
+  let isCorrect = false;
+
+  if (steps[step].validator) {
+    isCorrect = steps[step].validator(userValue);
+  } else {
+    isCorrect = userValue === steps[step].answer;
+  }
+
+  if (isCorrect) {
 
     feedback.textContent = "✅ Correcto";
 
