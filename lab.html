@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -20,33 +21,34 @@
 
   <main class="lab-grid">
 
-    <section class="panel code-panel">
-      <h2>Código</h2>
-      <div class="editor-wrapper">
-        <pre id="editorOverlay" class="editor-overlay"></pre>
-        <textarea id="codeEditor" class="editor" spellcheck="false"></textarea>
-      </div>
-      <div class="editor-actions">
-        <button id="applyBtn" type="button" disabled>Aplicar cambios</button>
-        <button id="resetBtn" type="button">Restaurar código</button>
-      </div>
-    </section>
+```
+<section class="panel code-panel">
+  <h2>Código</h2>
+  <div class="editor-wrapper">
+    <pre id="editorOverlay" class="editor-overlay"></pre>
+    <textarea id="codeEditor" class="editor" spellcheck="false"></textarea>
+  </div>
+  <div class="editor-actions">
+    <button id="applyBtn" type="button" disabled>Aplicar cambios</button>
+    <button id="resetBtn" type="button">Restaurar código</button>
+  </div>
+</section>
 
-    <section class="panel help-panel">
-      <h2>Asistencia</h2>
-      <p id="progress" class="progress"></p>
-      <p id="instruction" class="instruction"></p>
-      <p id="explanation" class="explanation"></p>
-      <p id="hint" class="hint"></p>
-      <pre id="example" class="example"></pre>
-    </section>
+<section class="panel help-panel">
+  <h2>Asistencia</h2>
+  <p id="progress" class="progress"></p>
+  <p id="instruction" class="instruction"></p>
+  <p id="explanation" class="explanation"></p>
+  <p id="hint" class="hint"></p>
+  <pre id="example" class="example"></pre>
+</section>
 
-    <section class="panel scene-panel">
-      <h2>Escena</h2>
-      <div id="scene-container"></div>
-    </section>
+<section class="panel scene-panel">
+  <h2>Escena</h2>
 
-  </main>
+  <div id="scene-container"></div>
+
+  <!-- 🔥 CONTROLES AHORA DENTRO DE LA ESCENA -->
   <div class="controls-panel">
     <h3>Controles</h3>
 
@@ -61,9 +63,10 @@
     </label>
 
     <label>
-      Rotación:
+      Velocidad de rotación:
       <input type="range" id="rotationSlider" min="0.001" max="0.1" step="0.001">
     </label>
+
     <label>
       Forma:
       <select id="shapeSelector">
@@ -83,18 +86,27 @@
 
   </div>
 
+</section>
+```
+
+  </main>
+
   <section class="exercise-panel">
     <h3>Ejercicio</h3>
     <code id="exerciseCode" class="exercise-code"></code>
 
-    <div class="exercise-row">
-      <input type="text" id="userInput" placeholder="Escribe aquí...">
-      <button id="checkBtn" type="button">Validar</button>
-    </div>
+```
+<div class="exercise-row">
+  <input type="text" id="userInput" placeholder="Escribe aquí...">
+  <button id="checkBtn" type="button">Validar</button>
+</div>
 
-    <p id="feedback" class="feedback"></p>
+<p id="feedback" class="feedback"></p>
+```
+
   </section>
 
   <script type="module" src="lab.js"></script>
+
 </body>
 </html>
