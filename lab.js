@@ -164,11 +164,16 @@ btn.addEventListener("click", () => {
 
     feedback.textContent = "✅ Correcto";
 
+    // Ejecutar lógica
     steps[step].action();
 
+    // Agregar código acumulado
     codeLines.push(steps[step].code);
+
+    // Actualizar editor
     updateCodeDisplay();
 
+    // Avanzar paso
     step++;
     input.value = "";
 
