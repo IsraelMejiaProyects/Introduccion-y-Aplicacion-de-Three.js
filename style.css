@@ -382,3 +382,30 @@ pre {
 }
 
 
+
+
+
+
+
+
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.card-text {
+    width: 70%;
+}
+
+.card-media {
+    width: 30%;
+}
+
+.card-media video,
+.card-media img {
+    width: 100%;
+    border-radius: 8px;
+}
