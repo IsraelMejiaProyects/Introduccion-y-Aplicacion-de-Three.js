@@ -292,23 +292,6 @@ input[type="text"] {
 
 
 
-
-#codeDisplay {
-  background-color: #0d1117;
-  color: #c9d1d9;
-  padding: 20px;
-  border-radius: 10px;
-  font-size: 14px;
-  overflow-x: auto;
-  min-height: 200px;
-  white-space: pre-wrap;
-}
-
-.code-panel h2 {
-  color: #58a6ff;
-}
-
-
 #explanation {
   margin-top: 15px;
   padding: 15px;
@@ -327,85 +310,3 @@ input[type="text"] {
 
 
 
-
-
-
-/* CONTENEDOR GENERAL */
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 40px 20px;
-}
-
-/* TÍTULOS */
-h1 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  text-align: center;
-  color: #8b949e;
-  margin-bottom: 40px;
-}
-
-/* TARJETAS */
-.card {
-  background-color: #161b22;
-  padding: 20px;
-  margin-bottom: 25px;
-  border-radius: 10px;
-  border: 1px solid #30363d;
-}
-
-/* CÓDIGO */
-pre {
-  background-color: #0d1117;
-  padding: 15px;
-  border-radius: 8px;
-  overflow-x: auto;
-  color: #c9d1d9;
-}
-
-/* BOTÓN */
-.center {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.btn {
-  padding: 12px 25px;
-  background-color: #238636;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-}
-
-
-
-
-
-
-
-
-
-.row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.card-text {
-    width: 70%;
-}
-
-.card-media {
-    width: 30%;
-}
-
-.card-media video,
-.card-media img {
-    width: 100%;
-    border-radius: 8px;
-}
