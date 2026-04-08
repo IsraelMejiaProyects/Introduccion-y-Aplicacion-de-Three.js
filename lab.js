@@ -92,8 +92,7 @@ renderer.setPixelRatio(window.devicePixelRatio);`,
     action: () => {
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap; // 🔥 sombras suaves
-      
+
       const width = container.clientWidth;
       const height = container.clientHeight;
 
@@ -209,34 +208,18 @@ scene.add(light);`,
     action: (inputValue) => {
       const intensity = Number(inputValue);
 
-      light = new THREE.DirectionalLight(0xffffff, intensity);
-
-      light.position.set(5, 8, 5);
-      light.castShadow = true;
-
-      // 🔥 CONFIGURACIÓN DE SOMBRA (MUY IMPORTANTE)
-      light.shadow.mapSize.width = 1024;
-      light.shadow.mapSize.height = 1024;
-
-      light.shadow.camera.near = 0.5;
-      light.shadow.camera.far = 50;
-
-      light.shadow.camera.left = -10;
-      light.shadow.camera.right = 10;
-      light.shadow.camera.top = 10;
-      light.shadow.camera.bottom = -10;
-
-      scene.add(light);
-      
+      light = new THREE.PointLight(0xffffff, intensity);
       light.castShadow = true;
       light.position.set(5, 5, 5);
       scene.add(light);
-      
-      const floorMaterial = new THREE.MeshStandardMaterial({
-        color: 0x111111,
-        metalness: 0.6,
-        roughness: 0.2
-      });
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 20),
+        new THREE.MeshStandardMaterial({
+          color: 0x222222,
+          metalness: 0.2,
+          roughness: 0.8
+        })
+      );
 
       floor.rotation.x = -Math.PI / 2;
       floor.position.y = -1.5;
@@ -778,22 +761,6 @@ shapeSelector.addEventListener("change", (e) => {
 rotationToggle.addEventListener("change", (e) => {
   sceneState.rotationEnabled = e.target.value === "true";
 });
-
-function updateCodeDisplay() {
-  const display = document.getElementById("codeDisplay");
-
-  let codeText = "";
-
-  generatedCode.forEach((line, index) => {
-    if (index === generatedCode.length - 1) {
-      codeText += "👉 " + line + "\n";
-    } else {
-      codeText += line + "\n";
-    }
-  });
-
-  display.textContent = codeText;
-}
 
 
 updateHelp();
