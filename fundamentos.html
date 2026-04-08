@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Fundamentos Three.js</title>
+  <title>Fundamentos - Three.js</title>
 
   <!-- Fuente -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <nav>
       <a href="index.html">Inicio</a>
@@ -19,11 +20,88 @@
     </nav>
   </header>
 
-  <main>
-    <h1>Fundamentos Three.js</h1>
-    <p>Explora el mundo del 3D en la web con ejemplos interactivos.</p>
+  <main class="container">
 
-    <a class="btn" href="lab.html">Ir al Laboratorio</a>
+    <h1>Fundamentos de Three.js</h1>
+    <p class="subtitle">Aprende los conceptos esenciales para crear escenas 3D en la web.</p>
+
+    <!-- SECCIÓN: ¿QUÉ ES? -->
+    <section class="card">
+      <h2>¿Qué es Three.js?</h2>
+      <p>
+        Three.js es una librería de JavaScript que permite crear gráficos 3D en el navegador utilizando WebGL.
+        Facilita la creación de escenas, cámaras, luces y objetos sin necesidad de trabajar directamente con WebGL.
+      </p>
+    </section>
+
+    <!-- ESCENA -->
+    <section class="card">
+      <h2>Escena (Scene)</h2>
+      <p>
+        La escena es el contenedor principal donde se agregan todos los objetos 3D, luces y cámaras.
+      </p>
+      <pre><code>const scene = new THREE.Scene();</code></pre>
+    </section>
+
+    <!-- CÁMARA -->
+    <section class="card">
+      <h2>Cámara (Camera)</h2>
+      <p>
+        La cámara define el punto de vista desde el cual se observa la escena.
+      </p>
+      <pre><code>const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);</code></pre>
+    </section>
+
+    <!-- RENDERER -->
+    <section class="card">
+      <h2>Renderizador (Renderer)</h2>
+      <p>
+        El renderer se encarga de dibujar la escena en el navegador.
+      </p>
+      <pre><code>const renderer = new THREE.WebGLRenderer();</code></pre>
+    </section>
+
+    <!-- GEOMETRÍA -->
+    <section class="card">
+      <h2>Geometría</h2>
+      <p>
+        Define la forma del objeto 3D (cubo, esfera, etc.).
+      </p>
+      <pre><code>const geometry = new THREE.BoxGeometry();</code></pre>
+    </section>
+
+    <!-- MATERIAL -->
+    <section class="card">
+      <h2>Material</h2>
+      <p>
+        Define la apariencia del objeto, como color, textura y brillo.
+      </p>
+      <pre><code>const material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });</code></pre>
+    </section>
+
+    <!-- LUZ -->
+    <section class="card">
+      <h2>Luz</h2>
+      <p>
+        La iluminación permite ver los objetos con profundidad y realismo.
+      </p>
+      <pre><code>const light = new THREE.PointLight(0xffffff, 1);</code></pre>
+    </section>
+
+    <!-- OBJETO -->
+    <section class="card">
+      <h2>Objeto (Mesh)</h2>
+      <p>
+        Un objeto 3D se crea combinando geometría y material.
+      </p>
+      <pre><code>const mesh = new THREE.Mesh(geometry, material);</code></pre>
+    </section>
+
+    <!-- BOTÓN -->
+    <div class="center">
+      <a href="lab.html" class="btn">Ir al Laboratorio Interactivo</a>
+    </div>
+
   </main>
 
 </body>
