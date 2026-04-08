@@ -309,6 +309,21 @@ input[type="text"] {
 }
 
 
+#explanation {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #161b22;
+  border-left: 4px solid #58a6ff;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+
+#feedback {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 
 
 
