@@ -293,5 +293,23 @@ input[type="text"] {
 
 
 
+#codeDisplay {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  overflow-x: auto;
+  min-height: 200px;
+  white-space: pre-wrap;
+}
+
+.code-panel h2 {
+  color: #58a6ff;
+}
+
+
+
+
 
 
