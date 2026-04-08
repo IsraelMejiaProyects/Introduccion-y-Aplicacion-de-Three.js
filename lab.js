@@ -215,7 +215,7 @@ scene.add(light);`,
       const floor = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 20),
         new THREE.MeshStandardMaterial({
-          color: 0x222222,
+          color: 0xfefffe,
           metalness: 0.2,
           roughness: 0.8
         })
