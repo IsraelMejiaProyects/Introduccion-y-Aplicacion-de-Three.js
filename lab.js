@@ -232,17 +232,17 @@ scene.add(light);`,
       light.position.set(5, 5, 5);
       scene.add(light);
       
-      //const floorMaterial = new THREE.MeshStandardMaterial({
-        //color: 0x111111,
-        //metalness: 0.6,
-        //roughness: 0.2
-      //});
+      const floorMaterial = new THREE.MeshStandardMaterial({
+        color: 0x111111,
+        metalness: 0.6,
+        roughness: 0.2
+      });
 
-      //floor.rotation.x = -Math.PI / 2;
-      //floor.position.y = -1.5;
-      //floor.receiveShadow = true;
+      floor.rotation.x = -Math.PI / 2;
+      floor.position.y = -1.5;
+      floor.receiveShadow = true;
 
-      //scene.add(floor);
+      scene.add(floor);
 
       return [
         `light = new THREE.PointLight(0xffffff, ${intensity});`,
