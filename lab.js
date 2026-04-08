@@ -749,18 +749,6 @@ function syncCodeFromState() {
   codeEditor.value = code;
 }
 
-const shapeSelector = document.getElementById("shapeSelector");
-const rotationToggle = document.getElementById("rotationToggle");
-
-shapeSelector.addEventListener("change", (e) => {
-  sceneState.shape = e.target.value;
-  applyState();
-  syncCodeFromState();
-});
-
-rotationToggle.addEventListener("change", (e) => {
-  sceneState.rotationEnabled = e.target.value === "true";
-});
 
 
 updateHelp();
