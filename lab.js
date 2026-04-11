@@ -430,6 +430,11 @@ function applyState() {
 
   rotationSpeed = sceneState.rotationSpeed;
 
+    // 🔥 AQUÍ VA LO NUEVO
+  if (shapeSelector) {
+    shapeSelector.value = sceneState.shape;
+  }
+
   renderSceneOnce();
 }
 
