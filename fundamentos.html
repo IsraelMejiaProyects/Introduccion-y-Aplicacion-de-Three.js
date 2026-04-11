@@ -28,11 +28,23 @@
     .card-media video,
     .card-media img {
         width: 100%;
-        border-radius: 8px;
+        border-radius: 10px;
+        object-fit: cover;
     }
-  
-  </style>
 
+    /* Responsive (MUY IMPORTANTE) */
+    @media (max-width: 768px) {
+        .row {
+            flex-direction: column;
+        }
+
+        .card-text,
+        .card-media {
+            width: 100%;
+        }
+    }
+  </style>
+  
 </head>
 <body>
 
@@ -48,21 +60,27 @@
   <main class="container">
 
     <h1>Fundamentos de Three.js</h1>
-    <p class="subtitle">Aprende los conceptos esenciales para crear escenas 3D en la web.</p>
+    <p class="subtitle">
+      Aprende los conceptos esenciales para crear escenas 3D en la web.
+    </p>
 
-    <!-- SECCIÓN: ¿QUÉ ES? -->
-    <section class="card">
-      <h2>¿Qué es Three.js?</h2>
-      <p>
-        Three.js es una librería de JavaScript que permite crear gráficos 3D en el navegador utilizando WebGL.
-        Facilita la creación de escenas, cámaras, luces y objetos sin necesidad de trabajar directamente con WebGL.
-      </p>
+    <!-- ¿QUÉ ES? -->
+    <section class="card row">
+      <div class="card-text">
+        <h2>¿Qué es Three.js?</h2>
+        <p>
+          Three.js es una librería de JavaScript que permite crear gráficos 3D en el navegador utilizando WebGL.
+          Facilita la creación de escenas, cámaras, luces y objetos sin necesidad de trabajar directamente con WebGL.
+        </p>
+      </div>
+
+      <div class="card-media">
+        <video src="media/intro.mp4" autoplay loop muted></video>
+      </div>
     </section>
 
-    <!-- ESCENA -->
+    <!-- SCENE -->
     <section class="card row">
-      
-      <!-- TEXTO -->
       <div class="card-text">
         <h2>Escena (Scene)</h2>
         <p>
@@ -71,65 +89,99 @@
         <pre><code>const scene = new THREE.Scene();</code></pre>
       </div>
 
-      <!-- VISUAL -->
       <div class="card-media">
-        <video src="media/scene-demo.mp4" autoplay loop muted></video>
+        <video src="media/scene.mp4" autoplay loop muted></video>
       </div>
-
     </section>
 
-    <!-- CÁMARA -->
-    <section class="card">
-      <h2>Cámara (Camera)</h2>
-      <p>
-        La cámara define el punto de vista desde el cual se observa la escena.
-      </p>
-      <pre><code>const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);</code></pre>
+    <!-- CAMERA -->
+    <section class="card row">
+      <div class="card-text">
+        <h2>Cámara (Camera)</h2>
+        <p>
+          La cámara define el punto de vista desde el cual se observa la escena.
+        </p>
+        <pre><code>const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);</code></pre>
+      </div>
+
+      <div class="card-media">
+        <video src="media/camera.mp4" autoplay loop muted></video>
+      </div>
     </section>
 
     <!-- RENDERER -->
-    <section class="card">
-      <h2>Renderizador (Renderer)</h2>
-      <p>
-        El renderer se encarga de dibujar la escena en el navegador.
-      </p>
-      <pre><code>const renderer = new THREE.WebGLRenderer();</code></pre>
+    <section class="card row">
+      <div class="card-text">
+        <h2>Renderizador (Renderer)</h2>
+        <p>
+          El renderer se encarga de dibujar la escena en el navegador.
+        </p>
+        <pre><code>const renderer = new THREE.WebGLRenderer();</code></pre>
+      </div>
+
+      <div class="card-media">
+        <video src="media/renderer.mp4" autoplay loop muted></video>
+      </div>
     </section>
 
-    <!-- GEOMETRÍA -->
-    <section class="card">
-      <h2>Geometría</h2>
-      <p>
-        Define la forma del objeto 3D (cubo, esfera, etc.).
-      </p>
-      <pre><code>const geometry = new THREE.BoxGeometry();</code></pre>
+    <!-- GEOMETRY -->
+    <section class="card row">
+      <div class="card-text">
+        <h2>Geometría</h2>
+        <p>
+          Define la forma del objeto 3D, como cubos, esferas o planos.
+        </p>
+        <pre><code>const geometry = new THREE.BoxGeometry();</code></pre>
+      </div>
+
+      <div class="card-media">
+        <video src="media/geometry.mp4" autoplay loop muted></video>
+      </div>
     </section>
 
     <!-- MATERIAL -->
-    <section class="card">
-      <h2>Material</h2>
-      <p>
-        Define la apariencia del objeto, como color, textura y brillo.
-      </p>
-      <pre><code>const material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });</code></pre>
+    <section class="card row">
+      <div class="card-text">
+        <h2>Material</h2>
+        <p>
+          Define la apariencia del objeto, incluyendo color, textura y propiedades visuales.
+        </p>
+        <pre><code>const material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });</code></pre>
+      </div>
+
+      <div class="card-media">
+        <video src="media/material.mp4" autoplay loop muted></video>
+      </div>
     </section>
 
-    <!-- LUZ -->
-    <section class="card">
-      <h2>Luz</h2>
-      <p>
-        La iluminación permite ver los objetos con profundidad y realismo.
-      </p>
-      <pre><code>const light = new THREE.PointLight(0xffffff, 1);</code></pre>
+    <!-- LIGHT -->
+    <section class="card row">
+      <div class="card-text">
+        <h2>Luz</h2>
+        <p>
+          La iluminación permite visualizar los objetos con profundidad y realismo.
+        </p>
+        <pre><code>const light = new THREE.PointLight(0xffffff, 1);</code></pre>
+      </div>
+
+      <div class="card-media">
+        <video src="media/light.mp4" autoplay loop muted></video>
+      </div>
     </section>
 
-    <!-- OBJETO -->
-    <section class="card">
-      <h2>Objeto (Mesh)</h2>
-      <p>
-        Un objeto 3D se crea combinando geometría y material.
-      </p>
-      <pre><code>const mesh = new THREE.Mesh(geometry, material);</code></pre>
+    <!-- MESH -->
+    <section class="card row">
+      <div class="card-text">
+        <h2>Objeto (Mesh)</h2>
+        <p>
+          Un objeto 3D se crea combinando una geometría con un material.
+        </p>
+        <pre><code>const mesh = new THREE.Mesh(geometry, material);</code></pre>
+      </div>
+
+      <div class="card-media">
+        <video src="media/mesh.mp4" autoplay loop muted></video>
+      </div>
     </section>
 
     <!-- BOTÓN -->
