@@ -349,15 +349,14 @@ input[type="text"] {
     border-radius: 10px;
 }
 
-/* RESPONSIVE */
-.fundamentos-page @media (max-width: 768px) {
-    .row {
+
+@media (max-width: 768px) {
+    .fundamentos-page .row {
         flex-direction: column;
     }
 
-    .card-text,
-    .card-media {
+    .fundamentos-page .card-text,
+    .fundamentos-page .card-media {
         width: 100%;
     }
 }
-

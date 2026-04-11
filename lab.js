@@ -435,12 +435,16 @@ function applyState() {
 
 function parseEditedCode(code) {
   const nextState = createDefaultSceneState();
+
   nextState.background = sceneState.background;
   nextState.camera = { ...sceneState.camera };
   nextState.materialColor = sceneState.materialColor;
   nextState.ambientIntensity = sceneState.ambientIntensity;
   nextState.lightIntensity = sceneState.lightIntensity;
   nextState.rotationSpeed = sceneState.rotationSpeed;
+
+  // 🔥 IMPORTANTE: mantener shape actual
+  nextState.shape = sceneState.shape;
 
   const bgMatch = code.match(/scene\.background\s*=\s*new THREE\.Color\(\s*(0x[0-9a-fA-F]{6})\s*\)/);
   if (bgMatch) {
@@ -493,6 +497,15 @@ function parseEditedCode(code) {
     if (Number.isFinite(speed) && speed > 0) {
       nextState.rotationSpeed = speed;
     }
+  }
+
+  // 🔥 NUEVO: detección de geometría
+  if (code.includes("SphereGeometry")) {
+    nextState.shape = "sphere";
+  } else if (code.includes("TorusGeometry")) {
+    nextState.shape = "torus";
+  } else if (code.includes("BoxGeometry")) {
+    nextState.shape = "cube";
   }
 
   return nextState;
