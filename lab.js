@@ -3,7 +3,7 @@ import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/control
 
 let scene, camera, renderer, controls;
 let geometry, material, currentMesh;
-let ambientLight, light;
+let ambientLight, light, floor;
 let rotationSpeed = 0.01;
 
 let animationStarted = false;
@@ -308,7 +308,10 @@ function createDefaultSceneState() {
 
     // 🔥 NUEVO
     shape: "cube",
-    rotationEnabled: true
+    rotationEnabled: true,
+
+    floorY: -1.5,
+    floorColor: 0xfefffe    
   };
 }
 
@@ -417,7 +420,27 @@ function applyState() {
   currentMesh = new THREE.Mesh(geometry, material);
   currentMesh.castShadow = true;
 
-  scene.add(currentMesh);  
+  scene.add(currentMesh);
+
+  // ===== FLOOR =====
+  if (floor) {
+    scene.remove(floor);
+  }
+
+  floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(20, 20),
+    new THREE.MeshStandardMaterial({
+      color: sceneState.floorColor,
+      metalness: 0.2,
+      roughness: 0.8
+    })
+  );
+
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = sceneState.floorY;
+  floor.receiveShadow = true;
+
+  scene.add(floor);
 
 
   if (ambientLight) {
@@ -434,6 +457,7 @@ function applyState() {
   if (shapeSelector) {
     shapeSelector.value = sceneState.shape;
   }
+
 
   renderSceneOnce();
 }
@@ -511,6 +535,23 @@ function parseEditedCode(code) {
     nextState.shape = "torus";
   } else if (code.includes("BoxGeometry")) {
     nextState.shape = "cube";
+  }
+
+  // 🔥 FLOOR POSITION
+  const floorYMatch = code.match(/floor\.position\.y\s*=\s*([-\d.]+)/);
+  if (floorYMatch) {
+    const y = Number(floorYMatch[1]);
+    if (Number.isFinite(y)) {
+      nextState.floorY = y;
+    }
+  }
+
+  // 🔥 FLOOR COLOR
+  const floorColorMatch = code.match(
+    /PlaneGeometry[\s\S]*?MeshStandardMaterial\(\{\s*color:\s*(0x[0-9a-fA-F]{6})/
+  );
+  if (floorColorMatch) {
+    nextState.floorColor = Number(floorColorMatch[1]);
   }
 
   return nextState;
