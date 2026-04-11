@@ -764,6 +764,24 @@ function syncCodeFromState() {
     `rotationSpeed = ${sceneState.rotationSpeed}`
   );
 
+  // 🔥 NUEVO: sincronizar geometry
+  const geometryLine = `geometry = new THREE.${
+    sceneState.shape === "sphere"
+      ? "SphereGeometry(1, 32, 32)"
+      : sceneState.shape === "torus"
+      ? "TorusGeometry(0.7, 0.3, 16, 100)"
+      : "BoxGeometry()"
+  };`;
+
+  if (/geometry\s*=\s*new THREE\./.test(code)) {
+    code = code.replace(
+      /geometry\s*=\s*new THREE\.(BoxGeometry|SphereGeometry|TorusGeometry)\([^\)]*\)/,
+      geometryLine
+    );
+  } else {
+    code += "\n" + geometryLine;
+  }
+
   codeEditor.value = code;
 }
 
