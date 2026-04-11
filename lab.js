@@ -823,34 +823,6 @@ function syncCodeFromState() {
     code += "\n" + geometryLine;
   }
 
-
-  // ===== FLOOR =====
-  const floorCode = `
-  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(20, 20),
-    new THREE.MeshStandardMaterial({
-      color: ${"0x" + sceneState.floorColor.toString(16)},
-      metalness: 0.2,
-      roughness: 0.8
-    })
-  );
-
-  floor.rotation.x = -Math.PI / 2;
-  floor.position.y = ${sceneState.floorY};
-  floor.receiveShadow = true;
-
-  scene.add(floor);
-  `;
-
-  if (code.includes("PlaneGeometry")) {
-    code = code.replace(
-      /const floor = new THREE\.Mesh\([\s\S]*?scene\.add\(floor\);/,
-      floorCode.trim()
-    );
-  } else {
-    code += "\n\n" + floorCode;
-  }
-
   codeEditor.value = code;
 }
 
