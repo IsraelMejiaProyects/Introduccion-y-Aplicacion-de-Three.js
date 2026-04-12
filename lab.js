@@ -230,7 +230,21 @@ scene.add(light);`,
       return [
         `light = new THREE.PointLight(0xffffff, ${intensity});`,
         "light.position.set(5, 5, 5);",
-        "scene.add(light);"
+        "scene.add(light);",
+        "",
+        "const floor = new THREE.Mesh(",
+        "  new THREE.PlaneGeometry(20, 20),",
+        "  new THREE.MeshStandardMaterial({",
+        `    color: 0x${sceneState.floorColor.toString(16).padStart(6, "0")},`,
+        "    metalness: 0.2,",
+        "    roughness: 0.8",
+        "  })",
+        ");",
+        "",
+        "floor.rotation.x = -Math.PI / 2;",
+        `floor.position.y = ${sceneState.floorY};`,
+        "floor.receiveShadow = true;",
+        "scene.add(floor);"
       ].join("\n");
     }
   },
@@ -804,6 +818,33 @@ function syncCodeFromState() {
     /rotationSpeed\s*=\s*[-\d.]+/,
     `rotationSpeed = ${sceneState.rotationSpeed}`
   );
+
+
+  
+  const floorCode = `const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(20, 20),
+  new THREE.MeshStandardMaterial({
+    color: 0x${sceneState.floorColor.toString(16).padStart(6, "0")},
+    metalness: 0.2,
+    roughness: 0.8
+  })
+);
+
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = ${sceneState.floorY};
+floor.receiveShadow = true;
+
+scene.add(floor);`;
+
+  if (/const floor = new THREE\.Mesh\([\s\S]*?scene\.add\(floor\);/.test(code)) {
+    code = code.replace(
+      /const floor = new THREE\.Mesh\([\s\S]*?scene\.add\(floor\);/,
+      floorCode
+    );
+  } else {
+    code += "\n\n" + floorCode;
+  }
+
 
   // 🔥 NUEVO: sincronizar geometry
   const geometryLine = `geometry = new THREE.${
