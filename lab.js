@@ -345,10 +345,12 @@ function createDefaultSceneState() {
 
     // 🔥 NUEVO
     shape: "cube",
+    textureType: "none",
     rotationEnabled: true,
+    
 
     floorY: -1.5,
-    floorColor: 0xfefffe    
+    floorColor: 0xfefffe   
   };
 }
 
@@ -452,8 +454,30 @@ function applyState() {
 
   geometry = createGeometry(sceneState.shape);
 
+  const textureLoader = new THREE.TextureLoader();
+
+  let texture = null;
+
+  if (sceneState.textureType === "brick") {
+    texture = textureLoader.load("https://threejs.org/examples/textures/brick_diffuse.jpg");
+  } 
+  else if (sceneState.textureType === "rock") {
+    texture = textureLoader.load("https://threejs.org/examples/textures/stone.jpg");
+  } 
+  else if (sceneState.textureType === "grass") {
+    texture = textureLoader.load("https://threejs.org/examples/textures/terrain/grasslight-big.jpg");
+  }
+
+  // 🔥 configurar repetición si hay textura
+  if (texture) {
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(4, 4);
+  }
+
   material = new THREE.MeshStandardMaterial({
     color: sceneState.materialColor,
+    map: texture,
     metalness: 0.5,
     roughness: 0.2
   });
@@ -603,8 +627,15 @@ function parseEditedCode(code) {
     nextState.floorColor = Number(floorColorMatch[1]);
   }
 
-  return nextState;
-}
+
+  const textureMatch = code.match(/texture\s*=\s*"(brick|rock|grass)"/);
+
+  if (textureMatch) {
+    nextState.textureType = textureMatch[1];
+  }
+
+    return nextState;
+  }
 
 function applyEditedCode() {
   const code = codeEditor.value;
