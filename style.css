@@ -360,3 +360,54 @@ input[type="text"] {
         width: 100%;
     }
 }
+
+
+
+/* index */
+
+
+/* HERO */
+.hero {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  max-width: 600px;
+  margin: auto;
+  color: #8b949e;
+}
+
+/* BOTONES */
+.hero-buttons {
+  margin-top: 25px;
+}
+
+.btn {
+  padding: 12px 25px;
+  background-color: #238636;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  margin: 5px;
+  display: inline-block;
+}
+
+.btn.secondary {
+  background-color: #30363d;
+}
+
+/* INTRO */
+.intro {
+  max-width: 800px;
+  margin: 60px auto;
+  text-align: center;
+}
