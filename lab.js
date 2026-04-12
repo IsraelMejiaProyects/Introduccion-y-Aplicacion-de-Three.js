@@ -497,9 +497,6 @@ function applyState() {
     roughness: 0.2
   });
 
-  // 🔥 CREAR MESH
-  currentMesh = new THREE.Mesh(geometry, material);
-  scene.add(currentMesh);
 
   // ===== FLOOR =====
   if (floor) {
