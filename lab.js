@@ -421,6 +421,14 @@ function applyState() {
 
   if (currentMesh) {
     scene.remove(currentMesh);
+
+    if (currentMesh.geometry) {
+      currentMesh.geometry.dispose();
+    }
+
+    if (currentMesh.material) {
+      currentMesh.material.dispose();
+    }
   }
 
   geometry = createGeometry(sceneState.shape);
@@ -439,6 +447,14 @@ function applyState() {
   // ===== FLOOR =====
   if (floor) {
     scene.remove(floor);
+
+    if (floor.geometry) {
+      floor.geometry.dispose();
+    }
+
+    if (floor.material) {
+      floor.material.dispose();
+    }
   }
 
   floor = new THREE.Mesh(
