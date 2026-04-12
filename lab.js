@@ -466,8 +466,8 @@ function applyState() {
     let url = "";
 
     if (type === "brick") url = "/media/brick.jpg";
-    if (type === "rock") url = "/media/stone.jpg";
-    if (type === "grass") url = "/media/block.jpg";
+    if (type === "stone") url = "/media/stone.jpg";
+    if (type === "block") url = "/media/block.jpg";
 
     if (!url) return null;
 
@@ -642,7 +642,7 @@ function parseEditedCode(code) {
   }
 
 
-  const textureMatch = code.match(/texture\s*=\s*"(brick|rock|grass)"/);
+  const textureMatch = code.match(/texture\s*=\s*"(brick|stone|block)"/);
 
   if (textureMatch) {
     nextState.textureType = textureMatch[1];
