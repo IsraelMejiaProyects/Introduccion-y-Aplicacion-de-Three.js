@@ -454,37 +454,50 @@ function applyState() {
 
   geometry = createGeometry(sceneState.shape);
 
-  const textureLoader = new THREE.TextureLoader();
-
-  let texture = null;
-
-  if (sceneState.textureType === "brick") {
-    texture = textureLoader.load("https://threejs.org/examples/textures/brick_diffuse.jpg");
-  } 
-  else if (sceneState.textureType === "rock") {
-    texture = textureLoader.load("https://threejs.org/examples/textures/stone.jpg");
-  } 
-  else if (sceneState.textureType === "grass") {
-    texture = textureLoader.load("https://threejs.org/examples/textures/terrain/grasslight-big.jpg");
+  // 🔥 CACHE GLOBAL (ponlo arriba del archivo si no lo tienes)
+  if (!window.textureCache) {
+    window.textureCache = {};
   }
 
-  // 🔥 configurar repetición si hay textura
-  if (texture) {
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(4, 4);
+  function getTexture(type) {
+    if (window.textureCache[type]) return window.textureCache[type];
+
+    const loader = new THREE.TextureLoader();
+    let url = "";
+
+    if (type === "brick") url = "/media/brick.jpg";
+    if (type === "rock") url = "/media/stone.jpg";
+    if (type === "grass") url = "/media/block.jpg";
+
+    if (!url) return null;
+
+    const tex = loader.load(url);
+
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(4, 4);
+
+    window.textureCache[type] = tex;
+
+    return tex;
   }
 
+  // 🔥 obtener textura
+  const texture =
+    sceneState.textureType !== "none"
+      ? getTexture(sceneState.textureType)
+      : null;
+
+  // 🔥 CREAR MATERIAL CORRECTAMENTE
   material = new THREE.MeshStandardMaterial({
-    color: sceneState.materialColor,
     map: texture,
+    color: texture ? 0xffffff : sceneState.materialColor,
     metalness: 0.5,
     roughness: 0.2
   });
 
+  // 🔥 CREAR MESH
   currentMesh = new THREE.Mesh(geometry, material);
-  currentMesh.castShadow = true;
-
   scene.add(currentMesh);
 
   // ===== FLOOR =====
