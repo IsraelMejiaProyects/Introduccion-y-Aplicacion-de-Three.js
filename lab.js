@@ -10,6 +10,7 @@ let animationStarted = false;
 let editorLocked = true;
 let animationId = null;
 
+
 const DEFAULT_STATE = {
   background: 0x0d1117,
   camera: { x: 0, y: 0, z: 5 },
@@ -363,11 +364,9 @@ function updateCodeEditor() {
     : "// El código se construirá aquí paso a paso...";
 }
 
-function renderSceneOnce() {
-  if (renderer && scene && camera) {
-    renderer.render(scene, camera);
-  }
-}
+
+
+
 
 function startAnimation() {
   if (animationId) return;
@@ -383,13 +382,12 @@ function startAnimation() {
       controls.update();
     }
 
-    if (renderer && scene && camera) {
-      renderer.render(scene, camera);
-    }
+    renderer.render(scene, camera); // 🔥 sin if (no es necesario)
   }
 
   animate();
 }
+
 
 function finalizeLaboratory() {
   setupControls();
@@ -489,7 +487,7 @@ function applyState() {
   }
 
 
-  renderSceneOnce();
+
 }
 
 function parseEditedCode(code) {
@@ -794,7 +792,7 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
 
-  renderSceneOnce();
+
 });
 
 function setupControls() {
