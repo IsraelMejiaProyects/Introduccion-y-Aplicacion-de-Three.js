@@ -545,6 +545,10 @@ function applyState() {
     shapeSelector.value = sceneState.shape;
   }
 
+  currentMesh = new THREE.Mesh(geometry, material);
+  currentMesh.castShadow = true; // 🔥 FIX
+  scene.add(currentMesh);
+
 
 
 }
@@ -643,10 +647,14 @@ function parseEditedCode(code) {
   }
 
 
-  const textureMatch = code.match(/texture\s*=\s*"(brick|stone|block|block_2)"/);
+  if (/texture\s*=/.test(code)) {
+    const textureMatch = code.match(/texture\s*=\s*"(none|brick|stone|block|block_2)"/);
 
-  if (textureMatch) {
-    nextState.textureType = textureMatch[1];
+    if (textureMatch) {
+      nextState.textureType = textureMatch[1];
+    } else {
+      nextState.textureType = "none"; // fallback seguro
+    }
   }
 
     return nextState;
