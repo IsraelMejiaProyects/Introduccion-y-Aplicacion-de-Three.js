@@ -95,11 +95,11 @@ renderer.setPixelRatio(window.devicePixelRatio);`,
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.shadowMap.enabled = true;
 
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+      const rect = container.getBoundingClientRect();
 
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(rect.width, rect.height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
       container.appendChild(renderer.domElement);
 
       startAnimation();
@@ -785,14 +785,12 @@ resetBtn.addEventListener("click", hardResetLab);
 window.addEventListener("resize", () => {
   if (!renderer || !camera) return;
 
-  const width = container.clientWidth;
-  const height = container.clientHeight;
+  const rect = container.getBoundingClientRect();
 
-  camera.aspect = width / height;
+  camera.aspect = rect.width / rect.height;
   camera.updateProjectionMatrix();
-  renderer.setSize(width, height);
 
-
+  renderer.setSize(rect.width, rect.height);
 });
 
 function setupControls() {
