@@ -468,6 +468,7 @@ function applyState() {
     if (type === "brick") url = "/media/brick.jpg";
     if (type === "stone") url = "/media/stone.jpg";
     if (type === "block") url = "/media/block.jpg";
+    if (type === "block_2") url = "/media/block_2.jpg";
 
     if (!url) return null;
 
@@ -475,7 +476,7 @@ function applyState() {
 
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(4, 4);
+    tex.repeat.set(1, 1);
 
     window.textureCache[type] = tex;
 
@@ -642,7 +643,7 @@ function parseEditedCode(code) {
   }
 
 
-  const textureMatch = code.match(/texture\s*=\s*"(brick|stone|block)"/);
+  const textureMatch = code.match(/texture\s*=\s*"(brick|stone|block|block_2)"/);
 
   if (textureMatch) {
     nextState.textureType = textureMatch[1];
