@@ -8,6 +8,7 @@ let rotationSpeed = 0.01;
 
 let animationStarted = false;
 let editorLocked = true;
+let animationId = null;
 
 const DEFAULT_STATE = {
   background: 0x0d1117,
@@ -369,11 +370,10 @@ function renderSceneOnce() {
 }
 
 function startAnimation() {
-  if (animationStarted) return;
-  animationStarted = true;
+  if (animationId) return;
 
   function animate() {
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
 
     if (currentMesh && sceneState.rotationEnabled) {
       currentMesh.rotation.y += rotationSpeed;
@@ -709,6 +709,11 @@ function disposeCurrentObjects() {
 
   if (container) {
     container.innerHTML = '';
+  }
+
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+    animationId = null;
   }
 
   scene = null;
