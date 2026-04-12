@@ -544,6 +544,7 @@ function parseEditedCode(code) {
   nextState.ambientIntensity = sceneState.ambientIntensity;
   nextState.lightIntensity = sceneState.lightIntensity;
   nextState.rotationSpeed = sceneState.rotationSpeed;
+  nextState.textureType = sceneState.textureType;
 
   // 🔥 IMPORTANTE: mantener shape actual
   nextState.shape = sceneState.shape;
