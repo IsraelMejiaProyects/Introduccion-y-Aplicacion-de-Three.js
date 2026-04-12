@@ -102,6 +102,19 @@ renderer.setPixelRatio(window.devicePixelRatio);`,
 
       container.appendChild(renderer.domElement);
 
+      // 🔥 FIX VISUAL + EVENTOS
+      renderer.domElement.style.display = "block";
+      renderer.domElement.style.width = "100%";
+      renderer.domElement.style.height = "100%";
+
+      // 🔥 FIX CRÍTICO PARA ZOOM DEL NAVEGADOR
+      renderer.domElement.addEventListener("wheel", (event) => {
+        event.preventDefault();
+      }, { passive: false });
+
+      // 🔥 evitar menú contextual (mejora interacción)
+      renderer.domElement.addEventListener("contextmenu", (e) => e.preventDefault());
+
       startAnimation();
 
       return [
@@ -259,9 +272,17 @@ scene.add(light);`,
 `controls = new OrbitControls(camera, renderer.domElement);`,
     action: () => {
       controls = new OrbitControls(camera, renderer.domElement);
+    
+      controls.enableZoom = true;
+      controls.zoomSpeed = 1.0;
+
+      // 🔥 FIX CLAVE
+      controls.update();
 
       return "controls = new OrbitControls(camera, renderer.domElement);";
     }
+
+    
   },
   {
     question: "rotationSpeed = ____;",
