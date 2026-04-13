@@ -555,3 +555,11 @@ input[type="text"] {
 .slider-controls button:hover {
   background-color: #30363d;
 }
+
+
+
+.download-section {
+  max-width: 800px;
+  margin: 60px auto;
+  text-align: center;
+}
