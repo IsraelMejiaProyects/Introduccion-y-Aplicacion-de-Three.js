@@ -65,42 +65,45 @@
       <h2>Conceptos Clave</h2>
 
       <div class="slider">
-
         <div class="slide active">
-          <h3>¿Qué es Three.js?</h3>
+          <h3>¿Para qué sirve Three.js?</h3>
           <p>
-            Es una librería que permite crear gráficos 3D en el navegador usando WebGL sin complicaciones.
+            Permite crear experiencias 3D interactivas directamente en el navegador, como simuladores,
+            videojuegos, visualizaciones de datos y recorridos virtuales.
           </p>
         </div>
 
         <div class="slide">
-          <h3>Escena (Scene)</h3>
+          <h3>¿Dónde se utiliza?</h3>
           <p>
-            Es el contenedor donde se agregan todos los objetos, luces y cámaras.
+            Se usa en sitios web modernos, aplicaciones educativas, arquitectura 3D, marketing digital
+            y experiencias inmersivas en línea.
           </p>
         </div>
 
         <div class="slide">
-          <h3>Cámara (Camera)</h3>
+          <h3>¿Cómo funciona?</h3>
           <p>
-            Define desde dónde se observa la escena, similar a una cámara real.
+            Three.js actúa como una capa sobre WebGL, simplificando la creación de gráficos 3D sin necesidad
+            de programar directamente en bajo nivel.
           </p>
         </div>
 
         <div class="slide">
-          <h3>Geometría + Material</h3>
+          <h3>¿Quién lo creó?</h3>
           <p>
-            La geometría define la forma y el material su apariencia (color, textura).
+            Fue desarrollado por Ricardo Cabello, también conocido como "Mr.doob",
+            y es mantenido por una comunidad global de desarrolladores.
           </p>
         </div>
 
         <div class="slide">
-          <h3>Interactividad</h3>
+          <h3>Ventajas principales</h3>
           <p>
-            Puedes controlar objetos, cámara y animaciones en tiempo real.
+            Es ligero, flexible, compatible con navegadores modernos y permite crear proyectos visuales
+            altamente atractivos sin necesidad de motores complejos.
           </p>
         </div>
-
       </div>
 
       <!-- CONTROLES -->
@@ -123,7 +126,19 @@
 
     </section>
 
-    <!-- VIDEO -->
+    <section class="download-section">
+
+      <h2>Guía Completa de Three.js</h2>
+
+      <p>
+        Descarga el documento académico completo que explica los fundamentos,
+        aplicaciones y funcionamiento de Three.js, junto con una guía del laboratorio interactivo.
+      </p>
+      <a href="guia_threejs.pdf" download class="btn">
+        Descargar Documento
+      </a>
+
+    </section>
 
     
 
@@ -133,6 +148,9 @@
 let currentSlide = 0;
 const slides = document.querySelectorAll(".slide");
 
+let autoPlayInterval;
+
+// Mostrar slide
 function showSlide(index) {
   slides.forEach((slide, i) => {
     slide.classList.remove("active");
@@ -142,15 +160,59 @@ function showSlide(index) {
   });
 }
 
+// Siguiente
 function nextSlide() {
   currentSlide = (currentSlide + 1) % slides.length;
   showSlide(currentSlide);
 }
 
+// Anterior
 function prevSlide() {
   currentSlide = (currentSlide - 1 + slides.length) % slides.length;
   showSlide(currentSlide);
 }
+
+// 🔥 AUTOPLAY
+function startAutoPlay() {
+  autoPlayInterval = setInterval(() => {
+    nextSlide();
+  }, 8000); // cada 4 segundos
+}
+
+// 🔥 REINICIAR autoplay si el usuario interactúa
+function resetAutoPlay() {
+  clearInterval(autoPlayInterval);
+  startAutoPlay();
+}
+
+// Eventos en botones
+document.querySelectorAll(".slider-controls button")[0]
+  .addEventListener("click", () => {
+    prevSlide();
+    resetAutoPlay();
+  });
+
+document.querySelectorAll(".slider-controls button")[1]
+  .addEventListener("click", () => {
+    nextSlide();
+    resetAutoPlay();
+  });
+
+// Iniciar al cargar
+startAutoPlay();
+
+
+const slider = document.querySelector(".slider");
+
+slider.addEventListener("mouseenter", () => {
+  clearInterval(autoPlayInterval);
+});
+
+slider.addEventListener("mouseleave", () => {
+  startAutoPlay();
+});
+
+
 </script>
 
 </body>
