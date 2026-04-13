@@ -28,8 +28,7 @@
         <h1>Introducción y Aplicación de Three.js</h1>
 
         <p>
-          Aprende a crear experiencias 3D interactivas en la web utilizando 
-          :contentReference[oaicite:0]{index=0}.
+          Aprende a crear experiencias 3D interactivas en la web utilizando <strong>Three.js</strong>.
         </p>
 
         <div class="hero-buttons">
@@ -60,6 +59,58 @@
 
     </section>
 
+    <!-- SLIDER -->
+    <section class="slider-section">
+
+      <h2>Conceptos Clave</h2>
+
+      <div class="slider">
+
+        <div class="slide active">
+          <h3>¿Qué es Three.js?</h3>
+          <p>
+            Es una librería que permite crear gráficos 3D en el navegador usando WebGL sin complicaciones.
+          </p>
+        </div>
+
+        <div class="slide">
+          <h3>Escena (Scene)</h3>
+          <p>
+            Es el contenedor donde se agregan todos los objetos, luces y cámaras.
+          </p>
+        </div>
+
+        <div class="slide">
+          <h3>Cámara (Camera)</h3>
+          <p>
+            Define desde dónde se observa la escena, similar a una cámara real.
+          </p>
+        </div>
+
+        <div class="slide">
+          <h3>Geometría + Material</h3>
+          <p>
+            La geometría define la forma y el material su apariencia (color, textura).
+          </p>
+        </div>
+
+        <div class="slide">
+          <h3>Interactividad</h3>
+          <p>
+            Puedes controlar objetos, cámara y animaciones en tiempo real.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- CONTROLES -->
+      <div class="slider-controls">
+        <button onclick="prevSlide()">⟵</button>
+        <button onclick="nextSlide()">⟶</button>
+      </div>
+
+    </section>
+
     <!-- SECCIÓN DESCRIPCIÓN -->
     <section class="intro">
 
@@ -77,6 +128,30 @@
     
 
   </main>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.remove("active");
+    if (i === index) {
+      slide.classList.add("active");
+    }
+  });
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}
+
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+  showSlide(currentSlide);
+}
+</script>
 
 </body>
 </html>
